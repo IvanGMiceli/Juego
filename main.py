@@ -44,6 +44,8 @@ while juego_ejecutandose:
                     rana.saltar()
                 elif evento.key == pygame.K_h:
                     rana.vidas -= 1    
+                elif evento.key == pygame.K_i:
+                    rana.puntos += 100
 
     tiempo_nivel = 120
     tiempo_transcurrido = pygame.time.get_ticks() // 1000
@@ -51,17 +53,19 @@ while juego_ejecutandose:
 
     tiempo_en_pantalla = pygame.font.Font.render(fuente,"Tiempo: {}".format(tiempo_nivel),True,(0,0,0))
     vidas_restantes = pygame.font.Font.render(fuente,"Vidas: {}".format(rana.vidas),True,(0,0,0))
+    puntaje = pygame.font.Font.render(fuente,"Puntos: {}".format(rana.puntos),True,(0,0,0))
 
     pantalla.blit(imagen_fondo, imagen_fondo.get_rect())
-    pantalla.blit(tiempo_en_pantalla,(80,20))
-    pantalla.blit(vidas_restantes,(580,20))
+    pantalla.blit(tiempo_en_pantalla,(200,20))
+    pantalla.blit(vidas_restantes,(520,20))
+    pantalla.blit(puntaje,(770,20))
     
     for bloque in objetos_lista:
         bloque.dibujar(pantalla)
 
     rana.actualizar(FPS,pantalla)
 
-    if tiempo_nivel == 0 or rana.vidas == 0:
+    if tiempo_nivel == 0:
         sys.exit()
 
 
