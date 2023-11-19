@@ -15,6 +15,9 @@ juego_ejecutandose = True
 
 clock = pygame.time.Clock()
 
+#SE AGREGA FUENTE PARA PROBAR GIT
+fuente = pygame.font.SysFont("Italic",50)
+
 #CREO LA HOJA DE SPRITES DE MI PJ, E INSTANCIO A MI PERSONAJE
 hoja_sprites = Auxiliar.cargar_sprite_sheets("MainCharacters", "NinjaFrog", 32, 32, True)
 rana = Jugador(100,100,50,50,hoja_sprites)
