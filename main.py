@@ -7,7 +7,7 @@ from plataforma import *
 
 pygame.init()
 pantalla = pygame.display.set_mode((ANCHO_VENTANA,ALTO_VENTANA))
-pygame.display.set_caption("JUEGO PRUEBA 1")
+pygame.display.set_caption("FROG GAIDEN III")
 
 imagen_fondo = (pygame.image.load(r"Juego\assets\Maps background\Fondo uno.png"))
 imagen_fondo = pygame.transform.scale(imagen_fondo,(ANCHO_VENTANA,ALTO_VENTANA))
@@ -42,22 +42,26 @@ while juego_ejecutandose:
         if evento.type == pygame.KEYDOWN:
                 if evento.key == pygame.K_SPACE and rana.contador_salto < 2:
                     rana.saltar()
+                elif evento.key == pygame.K_h:
+                    rana.vidas -= 1    
 
-    tiempo_nivel = 15
+    tiempo_nivel = 120
     tiempo_transcurrido = pygame.time.get_ticks() // 1000
     tiempo_nivel -= tiempo_transcurrido
 
     tiempo_en_pantalla = pygame.font.Font.render(fuente,"Tiempo: {}".format(tiempo_nivel),True,(0,0,0))
+    vidas_restantes = pygame.font.Font.render(fuente,"Vidas: {}".format(rana.vidas),True,(0,0,0))
 
     pantalla.blit(imagen_fondo, imagen_fondo.get_rect())
     pantalla.blit(tiempo_en_pantalla,(80,20))
+    pantalla.blit(vidas_restantes,(580,20))
     
     for bloque in objetos_lista:
         bloque.dibujar(pantalla)
 
     rana.actualizar(FPS,pantalla)
 
-    if tiempo_nivel == 0:
+    if tiempo_nivel == 0 or rana.vidas == 0:
         sys.exit()
 
 
