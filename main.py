@@ -1,4 +1,5 @@
 import pygame
+import sys
 from player import *
 from constantes import *
 from auxiliar import *
@@ -16,7 +17,7 @@ juego_ejecutandose = True
 clock = pygame.time.Clock()
 
 #SE AGREGA FUENTE PARA PROBAR GIT
-fuente = pygame.font.SysFont("Italic",50)
+fuente = pygame.font.SysFont("consolas",35)
 
 #CREO LA HOJA DE SPRITES DE MI PJ, E INSTANCIO A MI PERSONAJE
 hoja_sprites = Auxiliar.cargar_sprite_sheets("MainCharacters", "NinjaFrog", 32, 32, True)
@@ -42,12 +43,23 @@ while juego_ejecutandose:
                 if evento.key == pygame.K_SPACE and rana.contador_salto < 2:
                     rana.saltar()
 
+    tiempo_nivel = 15
+    tiempo_transcurrido = pygame.time.get_ticks() // 1000
+    tiempo_nivel -= tiempo_transcurrido
+
+    tiempo_en_pantalla = pygame.font.Font.render(fuente,"Tiempo: {}".format(tiempo_nivel),True,(0,0,0))
+
     pantalla.blit(imagen_fondo, imagen_fondo.get_rect())
+    pantalla.blit(tiempo_en_pantalla,(80,20))
     
     for bloque in objetos_lista:
         bloque.dibujar(pantalla)
 
     rana.actualizar(FPS,pantalla)
+
+    if tiempo_nivel == 0:
+        sys.exit()
+
 
     pygame.display.flip()
 
