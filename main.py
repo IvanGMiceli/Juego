@@ -24,12 +24,18 @@ hoja_sprites = Auxiliar.cargar_sprite_sheets("MainCharacters", "NinjaFrog", 32, 
 rana = Jugador(100,100,50,50,hoja_sprites)
 
 #CREO EL PISO DEL NIVEL, INSTANCIO LA CLASE DENTRO DE UN FOR Y LAS AGREGO A LA LISTA
-objetos_lista = []
+lista_piso = []
+lista_plataformas = []
 
 for i in range(13):
     bloque = Objeto(i * TAMAÑO_BLOQUE,ALTO_VENTANA - TAMAÑO_BLOQUE,TAMAÑO_BLOQUE,TAMAÑO_BLOQUE)
     bloque.cargar_imagen(TAMAÑO_BLOQUE,"Terrain","Terrain.png")
-    objetos_lista.append(bloque)
+    lista_piso.append(bloque)
+
+for i in range(4,8):
+    bloque = Objeto(i * TAMAÑO_BLOQUE,ALTO_VENTANA - TAMAÑO_BLOQUE * 3,TAMAÑO_BLOQUE,TAMAÑO_BLOQUE)
+    bloque.cargar_imagen(TAMAÑO_BLOQUE,"Terrain","Terrain.png")
+    lista_plataformas.append(bloque)
 
 while juego_ejecutandose:
     delta_ms = clock.tick(FPS)
@@ -60,10 +66,13 @@ while juego_ejecutandose:
     pantalla.blit(vidas_restantes,(520,20))
     pantalla.blit(puntaje,(770,20))
     
-    for bloque in objetos_lista:
+    for bloque in lista_piso:
         bloque.dibujar(pantalla)
+        for plat in lista_plataformas:
+            plat.dibujar(pantalla)
 
-    rana.actualizar(FPS,pantalla)
+
+    rana.actualizar(FPS,pantalla,rana,lista_piso,lista_plataformas)
 
     if tiempo_nivel == 0:
         sys.exit()

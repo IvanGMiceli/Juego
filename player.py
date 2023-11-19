@@ -34,7 +34,7 @@ class Jugador(pygame.sprite.Sprite):
             self.direccion = "derecha"
             self.cont_animacion = 0
 
-    def definir_limite_pantalla(self):
+    def definir_limite_pantalla_horizontal(self):
 
         if self.vel_x > 0 and self.rect.right >= ANCHO_VENTANA:
             self.vel_x = 0
@@ -42,14 +42,38 @@ class Jugador(pygame.sprite.Sprite):
         elif self.vel_x < 0 and self.rect.left <= 0:
             self.vel_x = 0
             self.rect.left = 0
+
+    def colision_piso(self,jugador,objetos_colision:list):
+
+        objetos_colisionados = []
+
+        for obj in objetos_colision:
+            if pygame.sprite.collide_rect(jugador,obj):
+                if self.rect.bottom >= obj.rect.top:
+                    self.rect.bottom = obj.rect.top
+                    self.vel_y = 0
+                    self.contador_salto = 0
+            objetos_colisionados.append(obj)
+            
+        return objetos_colisionados
     
-        if self.rect.bottom >= ALTO_VENTANA - TAMAÑO_BLOQUE:
-            self.rect.bottom = ALTO_VENTANA - TAMAÑO_BLOQUE
-            self.vel_y = 0
-            self.contador_salto = 0
-        elif self.rect.top <= 0:  
-            self.rect.top = 0
-            self.vel_y = 0
+    def colision_plataformas(self,jugador,objetos_colision:list):
+
+        objetos_colisionados = []
+
+        for obj in objetos_colision:
+            if pygame.sprite.collide_rect(jugador,obj):
+                if self.rect.bottom >= obj.rect.top:
+                    self.rect.bottom = obj.rect.top
+                    self.vel_y = 0
+                    self.contador_salto = 0
+                elif self.rect.top <= obj.rect.bottom:  
+                    self.rect.top = obj.rect.bottom
+                    self.vel_y = 0
+
+            objetos_colisionados.append(obj)
+            
+        return objetos_colisionados
 
     def saltar(self):
         self.vel_y -= GRAVEDAD * 8
@@ -76,7 +100,7 @@ class Jugador(pygame.sprite.Sprite):
         if self.rect.y >= ALTURA_SUELO:
             self.aterrizar()
 
-    def actualizar(self,fps,pantalla:pygame.surface.Surface):
+    def actualizar(self,fps,pantalla:pygame.surface.Surface,player,obj:list,obj_2:list):
         self.mover_jugador()
         self.vel_y += min(1, (self.contador_caida / fps) * GRAVEDAD)
         self.moverse(self.vel_x, self.vel_y)  
@@ -84,7 +108,9 @@ class Jugador(pygame.sprite.Sprite):
         self.contador_caida += 1
         self.actualizar_animacion()
         self.actualizar_rect()
-        self.definir_limite_pantalla()
+        self.definir_limite_pantalla_horizontal()
+        self.colision_piso(player,obj)
+        self.colision_plataformas(player,obj_2)
         self.dibujar(pantalla)
 
     def actualizar_animacion(self):
