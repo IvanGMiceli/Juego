@@ -34,7 +34,7 @@ class Jugador(pygame.sprite.Sprite):
             self.direccion = "derecha"
             self.cont_animacion = 0
 
-    def definir_limite_pantalla_horizontal(self):
+    def definir_limite_pantalla(self):
 
         if self.vel_x > 0 and self.rect.right >= ANCHO_VENTANA:
             self.vel_x = 0
@@ -42,6 +42,13 @@ class Jugador(pygame.sprite.Sprite):
         elif self.vel_x < 0 and self.rect.left <= 0:
             self.vel_x = 0
             self.rect.left = 0
+
+        if self.vel_y > 0 and self.rect.bottom >= ALTO_VENTANA:
+            self.vel_y = 0
+            self.rect.bottom = ALTO_VENTANA
+        elif self.vel_y < 0 and self.rect.top <= 0:
+            self.vel_y = 0
+            self.rect.top = 0
 
     def colision_piso(self,jugador,objetos_colision:list):
 
@@ -63,17 +70,41 @@ class Jugador(pygame.sprite.Sprite):
 
         for obj in objetos_colision:
             if pygame.sprite.collide_rect(jugador,obj):
+                #PISO ARRIBA
                 if self.rect.bottom >= obj.rect.top:
                     self.rect.bottom = obj.rect.top
                     self.vel_y = 0
                     self.contador_salto = 0
+
+                #CHOCO LA PARTE DE ABAJO
                 elif self.rect.top <= obj.rect.bottom:  
                     self.rect.top = obj.rect.bottom
                     self.vel_y = 0
 
+                #CHOCO A LA DERECHA
+                # if self.vel_x > 0 and (self.rect.right >= obj.rect.left):
+                #     self.vel_x = 0
+                #     self.rect.right = obj.rect.left
+
+                #CHOCO A LA IZQUIERDA
+                # if self.vel_x < 0 and self.rect.left <= obj.rect.right:
+                #     self.vel_x = 0
+                #     self.rect.left = obj.rect.right
+
+                
+
             objetos_colisionados.append(obj)
             
         return objetos_colisionados
+    
+    def colision_fruta(self,player,consumibles):
+
+        for i in range(len(consumibles)):
+            obj = consumibles[i]
+            if pygame.sprite.collide_mask(player, obj):
+                consumibles.pop(i)
+                player.puntos += 100
+                break
 
     def saltar(self):
         self.vel_y -= GRAVEDAD * 8
@@ -86,6 +117,11 @@ class Jugador(pygame.sprite.Sprite):
         self.vel_y = 0
         self.contador_salto = 0
         self.contador_caida = 0
+
+    def chocar_cabeza(self):
+        self.cont = 0
+        self.vel_y *= -1
+
 
     def mover_jugador(self):
 
@@ -100,7 +136,7 @@ class Jugador(pygame.sprite.Sprite):
         if self.rect.y >= ALTURA_SUELO:
             self.aterrizar()
 
-    def actualizar(self,fps,pantalla:pygame.surface.Surface,player,obj:list,obj_2:list):
+    def actualizar(self,fps,pantalla:pygame.surface.Surface,player,obj:list,obj_2:list,frutas:list,obj_3:list,obj_4:list,obj_5):
         self.mover_jugador()
         self.vel_y += min(1, (self.contador_caida / fps) * GRAVEDAD)
         self.moverse(self.vel_x, self.vel_y)  
@@ -108,9 +144,13 @@ class Jugador(pygame.sprite.Sprite):
         self.contador_caida += 1
         self.actualizar_animacion()
         self.actualizar_rect()
-        self.definir_limite_pantalla_horizontal()
+        self.definir_limite_pantalla()
         self.colision_piso(player,obj)
         self.colision_plataformas(player,obj_2)
+        self.colision_plataformas(player,obj_3)
+        self.colision_plataformas(player,obj_4)
+        self.colision_fruta(player,frutas)
+        self.colision_fruta(player,obj_5)
         self.dibujar(pantalla)
 
     def actualizar_animacion(self):
