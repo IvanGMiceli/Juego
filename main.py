@@ -19,7 +19,8 @@ clock = pygame.time.Clock()
 
 #SE AGREGA FUENTE PARA PROBAR GIT
 fuente = pygame.font.SysFont("consolas",35)
-fuente_mensaje_derrota = pygame.font.SysFont("consolas",90)
+fuente_nivel = pygame.font.SysFont("consolas",90)
+mensaje = input("Ingrese su nombre: ")
 
 #CREO LA HOJA DE SPRITES DE MI PJ, E INSTANCIO A MI PERSONAJE
 hoja_sprites = Auxiliar.cargar_sprite_sheets("MainCharacters", "NinjaFrog", 32, 32, True)
@@ -31,42 +32,42 @@ gallina = Enemigo(1000,ALTURA_SUELO,50,50,hoja_sprites_dos)
 
 #CREO EL PISO DEL NIVEL, INSTANCIO LA CLASE DENTRO DE UN FOR Y LAS AGREGO A LA LISTA
 lista_piso = []
-# lista_plataformas = []
-# lista_plataformas_dos = []
-# lista_plataformas_tres = []
-# lista_manzanas = []
-# lista_kiwis = []
+lista_plataformas = []
+lista_plataformas_dos = []
+lista_plataformas_tres = []
+lista_manzanas = []
+lista_kiwis = []
 
 for i in range(13):
     bloque = Objeto(i * TAMAÑO_BLOQUE,ALTO_VENTANA - TAMAÑO_BLOQUE,TAMAÑO_BLOQUE,TAMAÑO_BLOQUE)
     bloque.cargar_imagen(TAMAÑO_BLOQUE,"Terrain","Terrain.png")
     lista_piso.append(bloque)
 
-# for i in range(0,5):
-#     bloque = Objeto(i * TAMAÑO_BLOQUE,ALTO_VENTANA - TAMAÑO_BLOQUE * 3,TAMAÑO_BLOQUE,TAMAÑO_BLOQUE)
-#     bloque.cargar_imagen(TAMAÑO_BLOQUE,"Terrain","Terrain.png")
-#     lista_plataformas.append(bloque)
+for i in range(0,5):
+    bloque = Objeto(i * TAMAÑO_BLOQUE,ALTO_VENTANA - TAMAÑO_BLOQUE * 3,TAMAÑO_BLOQUE,TAMAÑO_BLOQUE)
+    bloque.cargar_imagen(TAMAÑO_BLOQUE,"Terrain","Terrain.png")
+    lista_plataformas.append(bloque)
 
-# for i in range(0,6):
-#     bloque = Objeto(ANCHO_VENTANA - (TAMAÑO_BLOQUE * i),ALTO_VENTANA - TAMAÑO_BLOQUE * 4,TAMAÑO_BLOQUE,TAMAÑO_BLOQUE)
-#     bloque.cargar_imagen(TAMAÑO_BLOQUE,"Terrain","Terrain.png")
-#     lista_plataformas_dos.append(bloque)
+for i in range(0,6):
+    bloque = Objeto(ANCHO_VENTANA - (TAMAÑO_BLOQUE * i),ALTO_VENTANA - TAMAÑO_BLOQUE * 4,TAMAÑO_BLOQUE,TAMAÑO_BLOQUE)
+    bloque.cargar_imagen(TAMAÑO_BLOQUE,"Terrain","Terrain.png")
+    lista_plataformas_dos.append(bloque)
 
-# for i in range(0,5):
-#     bloque = Objeto(i * TAMAÑO_BLOQUE,ALTO_VENTANA - TAMAÑO_BLOQUE * 6,TAMAÑO_BLOQUE,TAMAÑO_BLOQUE)
-#     bloque.cargar_imagen(TAMAÑO_BLOQUE,"Terrain","Terrain.png")
-#     lista_plataformas_tres.append(bloque)
+for i in range(0,5):
+    bloque = Objeto(i * TAMAÑO_BLOQUE,ALTO_VENTANA - TAMAÑO_BLOQUE * 6,TAMAÑO_BLOQUE,TAMAÑO_BLOQUE)
+    bloque.cargar_imagen(TAMAÑO_BLOQUE,"Terrain","Terrain.png")
+    lista_plataformas_tres.append(bloque)
 
 
-# for i in range(5):
-#     fruta = Objeto((i * TAMAÑO_BLOQUE) + 1, ALTO_VENTANA - TAMAÑO_BLOQUE * 4, 450 , 70)
-#     fruta.cargar_imagen(35,"Items/Fruits", "Apple.png")
-#     lista_manzanas.append(fruta)
+for i in range(5):
+    fruta = Objeto((i * TAMAÑO_BLOQUE) + 1, ALTO_VENTANA - TAMAÑO_BLOQUE * 4, 450 , 70)
+    fruta.cargar_imagen(35,"Items/Fruits", "Apple.png")
+    lista_manzanas.append(fruta)
 
-# for i in range(6):
-#     fruta = Objeto(ANCHO_VENTANA - (TAMAÑO_BLOQUE * i), ALTO_VENTANA - TAMAÑO_BLOQUE * 5, 450 , 70)
-#     fruta.cargar_imagen(35,"Items/Fruits", "Kiwi.png")
-#     lista_kiwis.append(fruta)
+for i in range(6):
+    fruta = Objeto(ANCHO_VENTANA - (TAMAÑO_BLOQUE * i), ALTO_VENTANA - TAMAÑO_BLOQUE * 5, 450 , 70)
+    fruta.cargar_imagen(35,"Items/Fruits", "Kiwi.png")
+    lista_kiwis.append(fruta)
 
 
 while juego_ejecutandose:
@@ -80,20 +81,23 @@ while juego_ejecutandose:
         if evento.type == pygame.KEYDOWN:
                 if evento.key == pygame.K_SPACE and rana.contador_salto < 2:
                     rana.saltar()
-                elif evento.key == pygame.K_h:
-                    rana.vidas -= 1
-                    
+                if evento.key == pygame.K_h:
+                    rana.puntos += 100
 
-
+    #VARIABLES DE TIEMPO
     tiempo_nivel = 120
     tiempo_transcurrido = pygame.time.get_ticks() // 1000  
     tiempo_nivel -= tiempo_transcurrido
 
+    #VARIABLES DE SUPERFICIE EN PANTALLA
     tiempo_en_pantalla = pygame.font.Font.render(fuente,"Tiempo: {}".format(tiempo_nivel),True,(0,0,0))
     vidas_restantes = pygame.font.Font.render(fuente,"Vidas: {}".format(rana.vidas),True,(0,0,0))
     puntaje = pygame.font.Font.render(fuente,"Puntos: {}".format(rana.puntos),True,(0,0,0))
-    mensaje_derrota = pygame.font.Font.render(fuente_mensaje_derrota,"GAME OVER",True,(0,0,0))
+    mensaje_derrota = pygame.font.Font.render(fuente_nivel,"GAME OVER",True,(0,0,0))
+    mensaje_victoria = pygame.font.Font.render(fuente_nivel,"NIVEL COMPLETADO!",True,(0,0,0))
+    puntuacion_final = pygame.font.Font.render(fuente,"Nombre: {0} | Puntuacion: {1}".format(mensaje,rana.puntos),True,(0,0,0))
 
+    #IMPRIMO EN PANTALLA
     pantalla.blit(imagen_fondo, imagen_fondo.get_rect())
     pantalla.blit(tiempo_en_pantalla,(200,20))
     pantalla.blit(vidas_restantes,(520,20))
@@ -103,29 +107,31 @@ while juego_ejecutandose:
     for bloque in lista_piso:
         bloque.dibujar(pantalla)
 
-    # for plat in lista_plataformas:
-    #     plat.dibujar(pantalla)
-    # for fruta in lista_manzanas:
-    #     fruta.dibujar(pantalla)
-    # for block in lista_plataformas_dos:
-    #     block.dibujar(pantalla)
-    # for platform in lista_plataformas_tres:
-    #     platform.dibujar(pantalla)
-    # for fruit in lista_kiwis:
-    #     fruit.dibujar(pantalla)
+    for plat in lista_plataformas:
+        plat.dibujar(pantalla)
+    for fruta in lista_manzanas:
+        fruta.dibujar(pantalla)
+    for block in lista_plataformas_dos:
+        block.dibujar(pantalla)
+    for platform in lista_plataformas_tres:
+        platform.dibujar(pantalla)
+    for fruit in lista_kiwis:
+        fruit.dibujar(pantalla)
 
-    #PAUSAR EL JUEGO PARA IMPRIMIR UN TEXTO
+
+    #IMPRIMIR UN TEXTO EN PANTALLA POR SI GANA O SE PIERDE
     if rana.vidas == 0:
         pantalla.blit(mensaje_derrota,(380,210))
-        # pygame.time.wait(10000)
-        
+        pantalla.blit(puntuacion_final,(310,300))
+    elif rana.puntos == 1000:
+        pantalla.blit(mensaje_victoria,(200,210))
+        pantalla.blit(puntuacion_final,(310,300))
 
-    rana.actualizar(FPS,pantalla,rana,lista_piso)
+    rana.actualizar(FPS,pantalla,rana,lista_piso,lista_plataformas,lista_manzanas,lista_plataformas_dos,lista_plataformas_tres,lista_kiwis)
+    # rana.actualizar(FPS,pantalla,rana,lista_piso)
     gallina.actualizar(pantalla,gallina,lista_piso,rana)
 
-
-
-    # rana.actualizar(FPS,pantalla,rana,lista_piso,lista_plataformas,lista_manzanas,lista_plataformas_dos,lista_plataformas_tres,lista_kiwis)
+    
 
     if tiempo_nivel == 0:
         sys.exit()
@@ -134,6 +140,8 @@ while juego_ejecutandose:
     pygame.display.flip()
 
 pygame.quit()
+
+
 
 
 """

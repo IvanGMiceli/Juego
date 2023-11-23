@@ -2,6 +2,9 @@ import pygame
 import os
 from os import listdir
 from os.path import isfile, join
+import json
+
+json_de_config = "./configs/config.json"
 
 class Auxiliar:
 
@@ -32,3 +35,7 @@ class Auxiliar:
     
 def flip(sprites):
         return [pygame.transform.flip(sprite, True, False) for sprite in sprites]
+
+def open_configs() -> dict:
+    with open(json_de_config, 'r', encoding='utf-8') as config:
+        return json.load(config)

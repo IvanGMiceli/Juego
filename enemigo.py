@@ -15,30 +15,36 @@ class Enemigo(pygame.sprite.Sprite):
         self.contador = 0
         self.sprites = sprites
 
-    def moverse(self, delta_x):
+    # def moverse(self):
+    #     if self.direccion == "derecha":
+    #         self.rect.x += self.vel_x
+    #         self.contador += 1
+    #         if self.contador == 150:
+    #             self.direccion = "derecha"
+    #             self.contador = 0
+    #     elif self.direccion == "derecha":
+    #         self.rect.x -= self.vel_x
+    #         self.contador += 1
+    #         if self.contador == 150:
+    #             self.direccion = "izquierda"
+    #             self.contador = 0
+
+    def definir_limite_pantalla(self):
+        
         if self.direccion == "izquierda":
-            self.rect.x += delta_x
-            self.contador += 1
-            if self.contador == 150:
-                self.direccion = "derecha"
-                self.contador = 0
-        elif self.direccion == "derecha":
-            self.rect.x -= delta_x
-            self.contador += 1
-            if self.contador == 150:
-                self.direccion = "izquierda"
-                self.contador = 0
-
-    def definir_limite_pantalla(self,delta_x):
-
-        if self.vel_x > 0 and self.rect.right >= ANCHO_VENTANA:
-            self.vel_x = -delta_x
-            self.rect.right = ANCHO_VENTANA
-            # self.direccion = "izquierda"
-        elif self.vel_x < 0 and self.rect.left <= 0:
-            self.vel_x = delta_x
-            self.rect.left = 0
-            # self.direccion = "derecha"
+            if (self.rect.right + self.vel_x ) < ANCHO_VENTANA:
+                self.rect.x += self.vel_x
+            else:
+                if self.rect.bottom + self.vel_x * 2 < ALTO_VENTANA:
+                    self.rect.y += self.vel_x * 2
+                    self.direccion = "derecha"
+        else:
+            if self.rect.left - self.vel_x > 0:
+                self.rect.x -= self.vel_x
+            else:
+                if (self.rect.bottom + self.vel_x * 2) < ALTO_VENTANA:
+                    self.rect.y += self.vel_x * 2
+                    self.direccion = "izquierda"
 
     def colision_piso(self,enemigo,objetos_colision:list):
 
@@ -56,23 +62,20 @@ class Enemigo(pygame.sprite.Sprite):
     
     def colision_player(self,enemigo,player):
 
-        self.golpes_enemigo = False
-
-        if pygame.sprite.collide_mask(enemigo, player):
+        if pygame.sprite.collide_rect(enemigo, player):
             if (self.rect.left <= player.rect.right) or (self.rect.right >= player.rect.left):
                 if player.vidas > 0:
-                    self.golpes_enemigo = True
-                    player.vidas -= 1 
-
-            if self.golpes_enemigo:
-                self.golpes_enemigo = False
+                    player.rect.x = player.pos_inicial[0]
+                    player.rect.y = player.pos_inicial[1]
+                    player.vidas -= 1
+                    enemigo.kill()
 
 
     def actualizar(self,pantalla:pygame.surface.Surface,enemigo,obj:list,player:Jugador):
-        self.moverse(self.vel_x)
+        # self.moverse()
         self.actualizar_animacion()
         self.actualizar_rect()
-        self.definir_limite_pantalla(self.vel_x)
+        self.definir_limite_pantalla()
         self.colision_piso(enemigo,obj)
         self.colision_player(enemigo,player)
         self.dibujar(pantalla)
