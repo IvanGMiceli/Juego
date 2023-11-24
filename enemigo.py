@@ -68,7 +68,7 @@ class Enemigo(pygame.sprite.Sprite):
                     player.rect.x = player.pos_inicial[0]
                     player.rect.y = player.pos_inicial[1]
                     player.vidas -= 1
-                    enemigo.kill()
+                    
 
 
     def actualizar(self,pantalla:pygame.surface.Surface,enemigo,obj:list,player:Jugador):

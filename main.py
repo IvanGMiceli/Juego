@@ -27,7 +27,8 @@ hoja_sprites = Auxiliar.cargar_sprite_sheets("MainCharacters", "NinjaFrog", 32, 
 rana = Jugador(600,ALTURA_SUELO,50,50,hoja_sprites)
 
 #CREO ENEMIGO
-hoja_sprites_dos = Auxiliar.cargar_sprite_sheets("Enemies","Chicken", 32, 34, True)
+hoja_sprites_dos = Auxiliar.cargar_sprite_sheets("Enemies","AngryPig", 32, 34, True)
+print(hoja_sprites_dos)
 gallina = Enemigo(1000,ALTURA_SUELO,50,50,hoja_sprites_dos)
 
 #CREO EL PISO DEL NIVEL, INSTANCIO LA CLASE DENTRO DE UN FOR Y LAS AGREGO A LA LISTA

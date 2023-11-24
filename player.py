@@ -73,15 +73,18 @@ class Jugador(pygame.sprite.Sprite):
         for obj in objetos_colision:
             if pygame.sprite.collide_rect(jugador,obj):
                 #PISO ARRIBA
-                # if self.rect.bottom >= obj.rect.top:
-                #     self.rect.bottom = obj.rect.top
-                #     self.vel_y = 0
-                #     self.contador_salto = 0
+                if self.rect.top < obj.rect.bottom:  
+                    # self.rect.top = obj.rect.bottom
+                    self.vel_y = 0
+                    print("Estoy en el if de abajo",self.rect.top,obj.rect.bottom)
+
+                elif self.rect.bottom < obj.rect.top :
+                    self.rect.bottom = obj.rect.top
+                    self.vel_y = 0
+                    self.contador_salto = 0
+                    print("Estoy en el if de arriba",self.rect.bottom,obj.rect.top)
 
                 #CHOCO LA PARTE DE ABAJO
-                if self.rect.top <= obj.rect.bottom and self.contador_salto > 0:  
-                    self.rect.top = obj.rect.bottom
-                    self.vel_y = 0
 
                 #CHOCO A LA DERECHA
                 # if self.vel_x > 0 and (self.rect.right >= obj.rect.left):
