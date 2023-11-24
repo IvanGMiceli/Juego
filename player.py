@@ -62,7 +62,6 @@ class Jugador(pygame.sprite.Sprite):
                     self.rect.bottom = obj.rect.top
                     self.vel_y = 0
                     self.contador_salto = 0
-                    print("Estoy en el if de colision_piso")
             objetos_colisionados.append(obj)
             
         return objetos_colisionados
@@ -78,24 +77,24 @@ class Jugador(pygame.sprite.Sprite):
                     jugador.rect.bottom = obj.rect.top
                     jugador.vel_y = 0
                     self.contador_salto = 0
-                    print("Estoy en el if de colision_plataformas (colisión desde arriba)")
+                    # print("Estoy en el if de colision_plataformas (colisión desde abajo)")
                 # Colisión desde arriba
                 elif jugador.rect.top < obj.rect.bottom and jugador.rect.bottom > obj.rect.bottom:
                     jugador.rect.top = obj.rect.bottom
                     jugador.vel_y = 0
-                    print("Estoy en el if de colision_plataformas (colisión desde abajo)")
+                    # print("Estoy en el if de colision_plataformas (colisión desde arriba)")
                 # Colisión desde la derecha
                 elif jugador.rect.right > obj.rect.left and jugador.rect.left < obj.rect.left:
                     jugador.rect.right = obj.rect.left
                     jugador.vel_x = 0
                     jugador.vel_y = 0
-                    print("Estoy en el if de colision_plataformas (colisión desde la derecha)")
+                    # print("Estoy en el if de colision_plataformas (colisión desde la derecha)")
                 # Colisión desde la izquierda
                 elif jugador.rect.left < obj.rect.right and jugador.rect.right > obj.rect.right:
                     jugador.rect.left = obj.rect.right
                     jugador.vel_x = 0
                     jugador.vel_y = 0
-                    print("Estoy en el if de colision_plataformas (colisión desde la izquierda)")
+                    # print("Estoy en el if de colision_plataformas (colisión desde la izquierda)")
 
             objetos_colisionados.append(obj)
 
@@ -140,9 +139,6 @@ class Jugador(pygame.sprite.Sprite):
 
         if self.rect.y >= ALTURA_SUELO:
             self.aterrizar()
-
-        # def actualizar(self,fps,pantalla:pygame.surface.Surface,player,obj:list):
-
 
     def actualizar(self,fps,pantalla:pygame.surface.Surface,player,obj:list,obj_2:list,frutas:list,obj_3:list,obj_4:list,obj_5):
         self.mover_jugador()

@@ -1,9 +1,11 @@
-
+from auxiliar import *
+from player import *
 
 class Stage:
     def __init__(self, pantalla, jugador, fondo, ancho_vent, alto_vent, nombre, nivel_piso):
         self.pantalla = pantalla
-        self.jugador = jugador
+        self.player_sprite = Auxiliar.cargar_sprite_sheets("MainCharacters", "NinjaFrog", 32, 32, True)
+        self.jugador = Jugador(600,ALTURA_SUELO,50,50,self.player_sprite)
         self.fondo = fondo
         self.ancho_vent = ancho_vent
         self.alto_vent = alto_vent

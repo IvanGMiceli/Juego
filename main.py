@@ -10,8 +10,17 @@ pygame.init()
 pantalla = pygame.display.set_mode((ANCHO_VENTANA,ALTO_VENTANA))
 pygame.display.set_caption("FROG GAIDEN III")
 
+
+#CARGO FONDOS DE CADA NIVEL
 imagen_fondo = (pygame.image.load(r"Juego\assets\Maps background\Fondo uno.png"))
 imagen_fondo = pygame.transform.scale(imagen_fondo,(ANCHO_VENTANA,ALTO_VENTANA))
+
+fondo_lvl_2 = (pygame.image.load(r"Juego\assets\Maps background\Fondo dos.png"))
+fondo_lvl_2 = pygame.transform.scale(fondo_lvl_2,(ANCHO_VENTANA,ALTO_VENTANA))
+
+fondo_lvl_3 = (pygame.image.load(r"Juego\assets\Maps background\Fondo tres.png"))
+fondo_lvl_3 = pygame.transform.scale(fondo_lvl_3,(ANCHO_VENTANA,ALTO_VENTANA))
+
 
 juego_ejecutandose = True
 
@@ -98,9 +107,9 @@ while juego_ejecutandose:
     puntuacion_final = pygame.font.Font.render(fuente,"Nombre: {0} | Puntuacion: {1}".format(mensaje,rana.puntos),True,(0,0,0))
 
     #IMPRIMO EN PANTALLA
-    pantalla.blit(imagen_fondo, imagen_fondo.get_rect())
+    pantalla.blit(fondo_lvl_2, fondo_lvl_2.get_rect())
     pantalla.blit(tiempo_en_pantalla,(200,20))
-    pantalla.blit(vidas_restantes,(520,20))
+    pantalla.blit(vidas_restantes,(520,20)) 
     pantalla.blit(puntaje,(770,20))
     
     
