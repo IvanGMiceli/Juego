@@ -62,46 +62,46 @@ class Jugador(pygame.sprite.Sprite):
                     self.rect.bottom = obj.rect.top
                     self.vel_y = 0
                     self.contador_salto = 0
+                    print("Estoy en el if de colision_piso")
             objetos_colisionados.append(obj)
             
         return objetos_colisionados
 
-    def colision_plataformas(self,jugador,objetos_colision:list):
+    def colision_plataformas(self, jugador, objetos_colision: list):
 
         objetos_colisionados = []
 
         for obj in objetos_colision:
-            if pygame.sprite.collide_rect(jugador,obj):
-                #PISO ARRIBA
-                if self.rect.top < obj.rect.bottom:  
-                    # self.rect.top = obj.rect.bottom
-                    self.vel_y = 0
-                    print("Estoy en el if de abajo",self.rect.top,obj.rect.bottom)
-
-                elif self.rect.bottom < obj.rect.top :
-                    self.rect.bottom = obj.rect.top
-                    self.vel_y = 0
+            if pygame.sprite.collide_rect(jugador, obj):
+                # Colisión desde abajo
+                if jugador.rect.bottom > obj.rect.top and jugador.rect.top < obj.rect.top:
+                    jugador.rect.bottom = obj.rect.top
+                    jugador.vel_y = 0
                     self.contador_salto = 0
-                    print("Estoy en el if de arriba",self.rect.bottom,obj.rect.top)
-
-                #CHOCO LA PARTE DE ABAJO
-
-                #CHOCO A LA DERECHA
-                # if self.vel_x > 0 and (self.rect.right >= obj.rect.left):
-                #     self.vel_x = 0
-                #     self.rect.right = obj.rect.left
-
-                #CHOCO A LA IZQUIERDA
-                # if self.vel_x < 0 and self.rect.left <= obj.rect.right:
-                #     self.vel_x = 0
-                #     self.rect.left = obj.rect.right
-
-                
+                    print("Estoy en el if de colision_plataformas (colisión desde arriba)")
+                # Colisión desde arriba
+                elif jugador.rect.top < obj.rect.bottom and jugador.rect.bottom > obj.rect.bottom:
+                    jugador.rect.top = obj.rect.bottom
+                    jugador.vel_y = 0
+                    print("Estoy en el if de colision_plataformas (colisión desde abajo)")
+                # Colisión desde la derecha
+                elif jugador.rect.right > obj.rect.left and jugador.rect.left < obj.rect.left:
+                    jugador.rect.right = obj.rect.left
+                    jugador.vel_x = 0
+                    jugador.vel_y = 0
+                    print("Estoy en el if de colision_plataformas (colisión desde la derecha)")
+                # Colisión desde la izquierda
+                elif jugador.rect.left < obj.rect.right and jugador.rect.right > obj.rect.right:
+                    jugador.rect.left = obj.rect.right
+                    jugador.vel_x = 0
+                    jugador.vel_y = 0
+                    print("Estoy en el if de colision_plataformas (colisión desde la izquierda)")
 
             objetos_colisionados.append(obj)
-            
+
         return objetos_colisionados
-    
+
+
     def colision_fruta(self,player,consumibles):
 
         for i in range(len(consumibles)):

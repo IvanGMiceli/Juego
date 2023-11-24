@@ -65,8 +65,8 @@ class Enemigo(pygame.sprite.Sprite):
         if pygame.sprite.collide_rect(enemigo, player):
             if (self.rect.left <= player.rect.right) or (self.rect.right >= player.rect.left):
                 if player.vidas > 0:
-                    player.rect.x = player.pos_inicial[0]
-                    player.rect.y = player.pos_inicial[1]
+                    # player.rect.x = player.pos_inicial[0]
+                    # player.rect.y = player.pos_inicial[1]
                     player.vidas -= 1
                     
 
