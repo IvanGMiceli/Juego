@@ -24,8 +24,8 @@ nivel_1 = Stage(
     lista_plataformas=stage_1_configs["lista_plataformas"],
     lista_plataformas_dos=stage_1_configs["lista_plataformas_dos"],
     lista_plataformas_tres=stage_1_configs["lista_plataformas_tres"],
-    lista_manzanas=stage_1_configs["lista_manzanas"],
-    lista_kiwis=stage_1_configs["lista_kiwis"],
+    lista_frutas=stage_1_configs["lista_manzanas"],
+    lista_frutas_dos=stage_1_configs["lista_kiwis"],
     lista_enemigos=[Enemigo(1000, ALTURA_SUELO, 50, 50, Auxiliar.cargar_sprite_sheets("Enemies", "AngryPig", 36, 30, True))]
 )
 
@@ -35,15 +35,15 @@ nivel_2 = Stage(
     lista_plataformas=stage_2_configs["lista_plataformas"],
     lista_plataformas_dos=stage_2_configs["lista_plataformas_dos"],
     lista_plataformas_tres=stage_2_configs["lista_plataformas_tres"],
-    lista_manzanas=stage_2_configs["lista_manzanas"],
-    lista_kiwis=stage_2_configs["lista_kiwis"],
+    lista_frutas=stage_2_configs["lista_bananas"],
+    lista_frutas_dos=stage_2_configs["lista_cherries"],
     lista_enemigos=[Enemigo(1000, ALTURA_SUELO, 50, 50, Auxiliar.cargar_sprite_sheets("Enemies", "Chicken", 32, 34, True))]
 )
 
 
 #CONTROL DE NIVELES
 niveles = [nivel_1,nivel_2]
-nivel_actual = 1
+nivel_actual = 0
 condicion_cambio_nivel = False
 
 juego_ejecutandose = True
@@ -103,8 +103,8 @@ while juego_ejecutandose:
     pantalla.blit(puntaje,(770,20))
 
     rana.actualizar(FPS,pantalla,rana,niveles[nivel_actual].lista_piso,niveles[nivel_actual].lista_plataformas,
-                    niveles[nivel_actual].lista_manzanas,niveles[nivel_actual].lista_plataformas_dos,niveles[nivel_actual].lista_plataformas_tres,
-                    niveles[nivel_actual].lista_kiwis)
+                    niveles[nivel_actual].lista_frutas,niveles[nivel_actual].lista_plataformas_dos,niveles[nivel_actual].lista_plataformas_tres,
+                    niveles[nivel_actual].lista_frutas_dos)
 
     if tiempo_nivel == 0:
         juego_ejecutandose = False

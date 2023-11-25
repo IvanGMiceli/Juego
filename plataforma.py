@@ -24,6 +24,11 @@ class Objeto(pygame.sprite.Sprite):
         superficie.blit(imagen, (0,0), rect)
         return pygame.transform.scale2x(superficie)
     
+    def cargar_imagen_bloque(self,tamaño,dir_1,dir_2,bloque_x,bloque_y):
+        bloque = self.cargar_bloque(tamaño,dir_1,dir_2,bloque_x,bloque_y)
+        self.imagen.blit(bloque, (0,0))
+        self.mask = pygame.mask.from_surface(self.imagen)
+    
     def cargar_bloque_fruta(self,size, dir_1, dir_2):
         ruta = join("Juego\\assets", dir_1, dir_2)
         imagen = pygame.image.load(ruta).convert_alpha()
@@ -34,11 +39,6 @@ class Objeto(pygame.sprite.Sprite):
     def cargar_imagen_fruta(self,tamaño,dir_1,dir_2):
         fruta = self.cargar_bloque_fruta(tamaño,dir_1,dir_2)
         self.imagen.blit(fruta, (0,0))
-        self.mask = pygame.mask.from_surface(self.imagen)
-
-    def cargar_imagen_bloque(self,tamaño,dir_1,dir_2,bloque_x,bloque_y):
-        bloque = self.cargar_bloque(tamaño,dir_1,dir_2,bloque_x,bloque_y)
-        self.imagen.blit(bloque, (0,0))
         self.mask = pygame.mask.from_surface(self.imagen)
 
     def dibujar(self,pantalla:pygame.surface.Surface):

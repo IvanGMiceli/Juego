@@ -1,13 +1,13 @@
 
 class Stage:
-    def __init__(self, fondo, lista_piso, lista_plataformas,lista_plataformas_dos,lista_plataformas_tres, lista_manzanas, lista_kiwis, lista_enemigos):
+    def __init__(self, fondo, lista_piso, lista_plataformas,lista_plataformas_dos,lista_plataformas_tres, lista_frutas, lista_frutas_dos, lista_enemigos):
         self.fondo = fondo
         self.lista_piso = lista_piso
         self.lista_plataformas = lista_plataformas
         self.lista_plataformas_dos = lista_plataformas_dos
         self.lista_plataformas_tres = lista_plataformas_tres
-        self.lista_manzanas = lista_manzanas
-        self.lista_kiwis = lista_kiwis
+        self.lista_frutas = lista_frutas
+        self.lista_frutas_dos = lista_frutas_dos
         self.lista_enemigos = lista_enemigos
 
     def dibujar(self, pantalla):
@@ -18,13 +18,13 @@ class Stage:
 
         for plat in self.lista_plataformas:
             plat.dibujar(pantalla)
-        for fruta in self.lista_manzanas:
+        for fruta in self.lista_frutas:
             fruta.dibujar(pantalla)
         for block in self.lista_plataformas_dos:
             block.dibujar(pantalla)
         for platform in self.lista_plataformas_tres:
             platform.dibujar(pantalla)
-        for fruit in self.lista_kiwis:
+        for fruit in self.lista_frutas_dos:
             fruit.dibujar(pantalla)
 
     def actualizar(self, pantalla, jugador):

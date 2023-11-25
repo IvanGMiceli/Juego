@@ -57,8 +57,8 @@ def configurar_nivel_dos(ancho_ventana, alto_ventana, tamaño_bloque):
         "lista_plataformas" : [],
         "lista_plataformas_dos" : [],
         "lista_plataformas_tres" : [],
-        "lista_manzanas" : [],
-        "lista_kiwis" : []}
+        "lista_bananas" : [],
+        "lista_cherries" : []}
 
     for i in range(13):
         bloque = Objeto(i * tamaño_bloque,alto_ventana - tamaño_bloque,tamaño_bloque,tamaño_bloque)
@@ -84,12 +84,12 @@ def configurar_nivel_dos(ancho_ventana, alto_ventana, tamaño_bloque):
     for i in range(5):
         fruta = Objeto((i * tamaño_bloque) + 1, alto_ventana - tamaño_bloque * 4, 450 , 70)
         fruta.cargar_imagen_fruta(35,"Items/Fruits", "Bananas.png")
-        stage_2_configs["lista_manzanas"].append(fruta)
+        stage_2_configs["lista_bananas"].append(fruta)
 
     for i in range(6):
         fruta = Objeto(ancho_ventana - (tamaño_bloque * i), alto_ventana - tamaño_bloque * 5, 450 , 70)
         fruta.cargar_imagen_fruta(35,"Items/Fruits", "Cherries.png")
-        stage_2_configs["lista_kiwis"].append(fruta)
+        stage_2_configs["lista_cherries"].append(fruta)
 
     return stage_2_configs
 
