@@ -1,35 +1,32 @@
-from auxiliar import *
-from player import *
 
 class Stage:
-    def __init__(self, pantalla, jugador, fondo, ancho_vent, alto_vent, nombre, nivel_piso):
-        self.pantalla = pantalla
-        self.player_sprite = Auxiliar.cargar_sprite_sheets("MainCharacters", "NinjaFrog", 32, 32, True)
-        self.jugador = Jugador(600,ALTURA_SUELO,50,50,self.player_sprite)
+    def __init__(self, fondo, lista_piso, lista_plataformas,lista_plataformas_dos,lista_plataformas_tres, lista_manzanas, lista_kiwis, lista_enemigos):
         self.fondo = fondo
-        self.ancho_vent = ancho_vent
-        self.alto_vent = alto_vent
-        self.nombre = nombre
-        self.nivel_piso = nivel_piso
-        self.win = False
+        self.lista_piso = lista_piso
+        self.lista_plataformas = lista_plataformas
+        self.lista_plataformas_dos = lista_plataformas_dos
+        self.lista_plataformas_tres = lista_plataformas_tres
+        self.lista_manzanas = lista_manzanas
+        self.lista_kiwis = lista_kiwis
+        self.lista_enemigos = lista_enemigos
 
-    def check_win(self):
-        pass
+    def dibujar(self, pantalla):
+        pantalla.blit(self.fondo, self.fondo.get_rect())
+        
+        for bloque in self.lista_piso:
+            bloque.dibujar(pantalla)
 
-    def update(self):
-        pass
+        for plat in self.lista_plataformas:
+            plat.dibujar(pantalla)
+        for fruta in self.lista_manzanas:
+            fruta.dibujar(pantalla)
+        for block in self.lista_plataformas_dos:
+            block.dibujar(pantalla)
+        for platform in self.lista_plataformas_tres:
+            platform.dibujar(pantalla)
+        for fruit in self.lista_kiwis:
+            fruit.dibujar(pantalla)
 
-    def draw(self):
-        pass
-
-    def stage_passed(self):
-        return self.win
-
-current_stage = Stage(pantalla, jugador, fondo, ANCHO_VENTANA, ALTO_VENTANA, "stage_1", lista_piso)
-
-while juego_ejecutandose:
-    current_stage.update()
-    current_stage.draw()
-
-    if current_stage.stage_passed():
-        pass
+    def actualizar(self, pantalla, jugador):
+        for enemigo in self.lista_enemigos:
+            enemigo.actualizar(pantalla, enemigo, self.lista_piso, jugador)

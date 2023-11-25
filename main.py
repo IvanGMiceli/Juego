@@ -91,7 +91,7 @@ while juego_ejecutandose:
                 if evento.key == pygame.K_SPACE and rana.contador_salto < 2:
                     rana.saltar()
                 if evento.key == pygame.K_h:
-                    rana.puntos += 100
+                    rana.vidas += 1
 
     #VARIABLES DE TIEMPO
     tiempo_nivel = 120
