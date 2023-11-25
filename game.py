@@ -31,19 +31,19 @@ nivel_1 = Stage(
 
 nivel_2 = Stage(
     fondo=stage_2_configs["fondo"],
-    lista_piso=stage_1_configs["lista_piso"],
-    lista_plataformas=stage_1_configs["lista_plataformas"],
-    lista_plataformas_dos=stage_1_configs["lista_plataformas_dos"],
-    lista_plataformas_tres=stage_1_configs["lista_plataformas_tres"],
-    lista_manzanas=stage_1_configs["lista_manzanas"],
-    lista_kiwis=stage_1_configs["lista_kiwis"],
+    lista_piso=stage_2_configs["lista_piso"],
+    lista_plataformas=stage_2_configs["lista_plataformas"],
+    lista_plataformas_dos=stage_2_configs["lista_plataformas_dos"],
+    lista_plataformas_tres=stage_2_configs["lista_plataformas_tres"],
+    lista_manzanas=stage_2_configs["lista_manzanas"],
+    lista_kiwis=stage_2_configs["lista_kiwis"],
     lista_enemigos=[Enemigo(1000, ALTURA_SUELO, 50, 50, Auxiliar.cargar_sprite_sheets("Enemies", "Chicken", 32, 34, True))]
 )
 
 
 #CONTROL DE NIVELES
 niveles = [nivel_1,nivel_2]
-nivel_actual = 0
+nivel_actual = 1
 condicion_cambio_nivel = False
 
 juego_ejecutandose = True
