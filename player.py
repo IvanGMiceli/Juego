@@ -140,9 +140,8 @@ class Jugador(pygame.sprite.Sprite):
         if self.rect.y >= ALTURA_SUELO:
             self.aterrizar()
 
-    #def actualizar(self,fps,pantalla:pygame.surface.Surface,player,obj:list,obj_2:list,frutas:list,obj_3:list,obj_4:list,obj_5):
 
-    def actualizar(self,fps,pantalla:pygame.surface.Surface,player,obj:list,obj_2:list,frutas:list,):
+    def actualizar(self,fps,pantalla:pygame.surface.Surface,player,obj:list,obj_2:list,frutas:list,obj_3:list,obj_4:list,obj_5):
         self.mover_jugador()
         self.vel_y += min(1, (self.contador_caida / fps) * GRAVEDAD)
         self.moverse(self.vel_x, self.vel_y)  
@@ -153,10 +152,10 @@ class Jugador(pygame.sprite.Sprite):
         self.definir_limite_pantalla()
         self.colision_piso(player,obj)
         self.colision_plataformas(player,obj_2)
-        # self.colision_plataformas(player,obj_3)
-        # self.colision_plataformas(player,obj_4)
+        self.colision_plataformas(player,obj_3)
+        self.colision_plataformas(player,obj_4)
         self.colision_fruta(player,frutas)
-        # self.colision_fruta(player,obj_5)
+        self.colision_fruta(player,obj_5)
         self.dibujar(pantalla)
 
     def actualizar_animacion(self):

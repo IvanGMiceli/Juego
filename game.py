@@ -102,7 +102,9 @@ while juego_ejecutandose:
     pantalla.blit(vidas_restantes,(520,20)) 
     pantalla.blit(puntaje,(770,20))
 
-    # rana.actualizar(FPS,pantalla,rana,obj=niveles[nivel_actual].lista_piso,obj_2=niveles[nivel_actual].lista_plataformas,frutas=niveles[nivel_actual].lista_manzanas)
+    rana.actualizar(FPS,pantalla,rana,niveles[nivel_actual].lista_piso,niveles[nivel_actual].lista_plataformas,
+                    niveles[nivel_actual].lista_manzanas,niveles[nivel_actual].lista_plataformas_dos,niveles[nivel_actual].lista_plataformas_tres,
+                    niveles[nivel_actual].lista_kiwis)
 
     if tiempo_nivel == 0:
         juego_ejecutandose = False

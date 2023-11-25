@@ -60,7 +60,6 @@ def configurar_nivel_dos(ancho_ventana, alto_ventana, tamaño_bloque):
         "lista_manzanas" : [],
         "lista_kiwis" : []}
 
-
     for i in range(13):
         bloque = Objeto(i * tamaño_bloque,alto_ventana - tamaño_bloque,tamaño_bloque,tamaño_bloque)
         bloque.cargar_imagen(tamaño_bloque,"Terrain","Terrain.png")
