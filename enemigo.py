@@ -6,7 +6,7 @@ class Enemigo(pygame.sprite.Sprite):
     def __init__(self,x,y,ancho,alto,sprites:dict):
         super().__init__()
         self.rect = pygame.Rect(x,y,ancho,alto)
-        self.vel_x = 3
+        self.vel_x = 2
         self.vel_y = 0
         self.mask = None
         self.direccion = "derecha"
@@ -14,20 +14,8 @@ class Enemigo(pygame.sprite.Sprite):
         self.contador_caida = 0
         self.contador = 0
         self.sprites = sprites
-
-    # def moverse(self):
-    #     if self.direccion == "derecha":
-    #         self.rect.x += self.vel_x
-    #         self.contador += 1
-    #         if self.contador == 150:
-    #             self.direccion = "derecha"
-    #             self.contador = 0
-    #     elif self.direccion == "derecha":
-    #         self.rect.x -= self.vel_x
-    #         self.contador += 1
-    #         if self.contador == 150:
-    #             self.direccion = "izquierda"
-    #             self.contador = 0
+        self.vidas = 3
+        self.pos_inicial_enemiga = (1000,ALTURA_SUELO)
 
     def definir_limite_pantalla(self):
         
@@ -62,24 +50,39 @@ class Enemigo(pygame.sprite.Sprite):
     
     def colision_player(self,enemigo,player):
 
-        if pygame.sprite.collide_rect(enemigo, player):
-            if (self.rect.left <= player.rect.right) or (self.rect.right >= player.rect.left):
+        if pygame.sprite.collide_rect(enemigo,player):
+            if self.rect.top < player.rect.bottom and self.rect.bottom > player.rect.bottom:
+                if player.vidas > 0 and self.vidas > 0:
+                    self.rect.top = player.rect.bottom
+                    self.rect.x = self.pos_inicial_enemiga[0]
+                    self.rect.y = self.pos_inicial_enemiga[1]
+                    self.vidas -= 1
+                    player.puntos += 1000                    
+                    # print("Estoy pisando al sprite")
+            elif self.rect.left < player.rect.right and self.rect.right > player.rect.right:
+                if player.vidas > 0:
+                    player.rect.x = player.pos_inicial[0]
+                    player.rect.y = player.pos_inicial[1]
+                    player.puntos = 0
+                    # print("Estoy chocando a la izquierda del sprite")
+            elif self.rect.right > player.rect.left and self.rect.left < player.rect.left:
                 if player.vidas > 0:
                     # player.rect.x = player.pos_inicial[0]
                     # player.rect.y = player.pos_inicial[1]
-                    player.vidas -= 1
-                    
-
+                    player.puntos = 0
+                    # print("Estoy chocando a la derecha del sprite")
+            elif self.rect.bottom > player.rect.top and self.rect.top < player.rect.top:
+                if player.vidas > 0:
+                    player.puntos = 0
+                    # print("Estoy pegando de abajo al sprite")
 
     def actualizar(self,pantalla:pygame.surface.Surface,enemigo,obj:list,player:Jugador):
-        # self.moverse()
         self.actualizar_animacion()
         self.actualizar_rect()
         self.definir_limite_pantalla()
         self.colision_piso(enemigo,obj)
         self.colision_player(enemigo,player)
         self.dibujar(pantalla)
-        
     
     def actualizar_animacion(self):
         anim_actual = "idle"

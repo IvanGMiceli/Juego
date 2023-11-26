@@ -26,7 +26,8 @@ nivel_1 = Stage(
     lista_plataformas_tres=stage_1_configs["lista_plataformas_tres"],
     lista_frutas=stage_1_configs["lista_manzanas"],
     lista_frutas_dos=stage_1_configs["lista_kiwis"],
-    lista_enemigos=[Enemigo(1000, ALTURA_SUELO, 50, 50, Auxiliar.cargar_sprite_sheets("Enemies", "AngryPig", 36, 30, True))]
+    lista_enemigos=stage_1_configs["lista_enemigos"]
+    # lista_enemigos=[Enemigo(1000, ALTURA_SUELO, 50, 50, Auxiliar.cargar_sprite_sheets("Enemies", "AngryPig", 36, 30, True))]
 )
 
 nivel_2 = Stage(
@@ -37,13 +38,14 @@ nivel_2 = Stage(
     lista_plataformas_tres=stage_2_configs["lista_plataformas_tres"],
     lista_frutas=stage_2_configs["lista_bananas"],
     lista_frutas_dos=stage_2_configs["lista_cherries"],
-    lista_enemigos=[Enemigo(1000, ALTURA_SUELO, 50, 50, Auxiliar.cargar_sprite_sheets("Enemies", "Chicken", 32, 34, True))]
+    lista_enemigos=stage_2_configs["lista_enemigos"]
+    # lista_enemigos=[Enemigo(1000, ALTURA_SUELO, 50, 50, Auxiliar.cargar_sprite_sheets("Enemies", "Chicken", 32, 34, True))]
 )
 
 
 #CONTROL DE NIVELES
 niveles = [nivel_1,nivel_2]
-nivel_actual = 0
+nivel_actual = 1
 condicion_cambio_nivel = False
 
 juego_ejecutandose = True
@@ -72,8 +74,6 @@ while juego_ejecutandose:
         if evento.type == pygame.KEYDOWN:
                 if evento.key == pygame.K_SPACE and rana.contador_salto < 2:
                     rana.saltar()
-                if evento.key == pygame.K_h:
-                    rana.vidas += 1
 
     #VARIABLES DE TIEMPO
     tiempo_nivel = 120
@@ -95,12 +95,19 @@ while juego_ejecutandose:
         if nivel_actual >= len(niveles):
             juego_ejecutandose = False
 
+    if len(niveles[nivel_actual].lista_enemigos) > 0:
+        if niveles[nivel_actual].lista_enemigos[0].vidas == 0:
+            niveles[nivel_actual].lista_enemigos.pop(0)
+            print("MATASTE A TODOS LOS ENEMIGOS. FELICITACIONES!!!")
+
     niveles[nivel_actual].dibujar(pantalla)
     niveles[nivel_actual].actualizar(pantalla, rana)
 
     pantalla.blit(tiempo_en_pantalla,(200,20))
     pantalla.blit(vidas_restantes,(520,20)) 
     pantalla.blit(puntaje,(770,20))
+
+    # pantalla.blit(vidas_enemigas,(520,50)) 
 
     rana.actualizar(FPS,pantalla,rana,niveles[nivel_actual].lista_piso,niveles[nivel_actual].lista_plataformas,
                     niveles[nivel_actual].lista_frutas,niveles[nivel_actual].lista_plataformas_dos,niveles[nivel_actual].lista_plataformas_tres,
