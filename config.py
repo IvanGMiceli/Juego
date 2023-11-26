@@ -51,6 +51,14 @@ def configurar_nivel_uno(ancho_ventana, alto_ventana, tamaño_bloque):
     for i in range(3):
         stage_1_configs["lista_enemigos"].append(Enemigo((i * 2) + i * 100, ALTURA_SUELO, 50, 50, Auxiliar.cargar_sprite_sheets("Enemies", "Chicken", 32, 34, True)))
 
+    coordenadas_sierras = [
+        (672, ALTO_VENTANA - TAMAÑO_BLOQUE - 40, 38, 38),
+        (750, ALTO_VENTANA - TAMAÑO_BLOQUE - 40, 38, 38),
+        (830, ALTO_VENTANA - TAMAÑO_BLOQUE - 40, 38, 38),
+    ]
+
+    stage_1_configs["coordenadas_sierras"] = coordenadas_sierras
+
     return stage_1_configs
 
 

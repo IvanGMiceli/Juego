@@ -7,6 +7,7 @@ from player import *
 from enemigo import *
 from config import *
 from stage import *
+from trampas import *
 
 #INICIALIZAR PANTALLA Y TITULO
 pygame.init()
@@ -26,7 +27,8 @@ nivel_1 = Stage(
     lista_plataformas_tres=stage_1_configs["lista_plataformas_tres"],
     lista_frutas=stage_1_configs["lista_manzanas"],
     lista_frutas_dos=stage_1_configs["lista_kiwis"],
-    lista_enemigos=stage_1_configs["lista_enemigos"]
+    lista_enemigos=stage_1_configs["lista_enemigos"],
+    cordenadas_trampas=stage_1_configs["coordenadas_sierras"]
 )
 
 nivel_2 = Stage(
@@ -37,7 +39,8 @@ nivel_2 = Stage(
     lista_plataformas_tres=stage_2_configs["lista_plataformas_tres"],
     lista_frutas=stage_2_configs["lista_bananas"],
     lista_frutas_dos=stage_2_configs["lista_cherries"],
-    lista_enemigos=stage_2_configs["lista_enemigos"]
+    lista_enemigos=stage_2_configs["lista_enemigos"],
+    cordenadas_trampas=stage_1_configs["coordenadas_sierras"]
 )
 
 
@@ -61,6 +64,8 @@ mensaje = input("Ingrese su nombre: ")
 hoja_sprites = Auxiliar.cargar_sprite_sheets("MainCharacters", "NinjaFrog", 32, 32, True)
 rana = Jugador(600,ALTURA_SUELO,50,50,hoja_sprites)
 
+sierras = crear_sierras(niveles[nivel_actual].cordenadas_trampas)
+
 while juego_ejecutandose:
 
     delta_ms = clock.tick(FPS)
@@ -72,8 +77,6 @@ while juego_ejecutandose:
         if evento.type == pygame.KEYDOWN:
                 if evento.key == pygame.K_SPACE and rana.contador_salto < 2:
                     rana.saltar()
-
-
 
     #VARIABLES DE TIEMPO
     tiempo_nivel = 120
@@ -126,6 +129,9 @@ while juego_ejecutandose:
     rana.actualizar(FPS,pantalla,rana,niveles[nivel_actual].lista_piso,niveles[nivel_actual].lista_plataformas,
                     niveles[nivel_actual].lista_frutas,niveles[nivel_actual].lista_plataformas_dos,niveles[nivel_actual].lista_plataformas_tres,
                     niveles[nivel_actual].lista_frutas_dos)
+    
+    for sierra in sierras:
+        sierra.actualizar(pantalla,sierra,rana)
 
     if tiempo_nivel == 0:
         juego_ejecutandose = False

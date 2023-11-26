@@ -1,6 +1,6 @@
 
 class Stage:
-    def __init__(self, fondo, lista_piso, lista_plataformas,lista_plataformas_dos,lista_plataformas_tres, lista_frutas, lista_frutas_dos, lista_enemigos):
+    def __init__(self, fondo, lista_piso, lista_plataformas,lista_plataformas_dos,lista_plataformas_tres, lista_frutas, lista_frutas_dos, lista_enemigos,cordenadas_trampas):
         self.fondo = fondo
         self.lista_piso = lista_piso
         self.lista_plataformas = lista_plataformas
@@ -9,6 +9,7 @@ class Stage:
         self.lista_frutas = lista_frutas
         self.lista_frutas_dos = lista_frutas_dos
         self.lista_enemigos = lista_enemigos
+        self.cordenadas_trampas = cordenadas_trampas
 
     def dibujar(self, pantalla):
         pantalla.blit(self.fondo, self.fondo.get_rect())
