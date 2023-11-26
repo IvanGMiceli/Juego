@@ -27,7 +27,6 @@ nivel_1 = Stage(
     lista_frutas=stage_1_configs["lista_manzanas"],
     lista_frutas_dos=stage_1_configs["lista_kiwis"],
     lista_enemigos=stage_1_configs["lista_enemigos"]
-    # lista_enemigos=[Enemigo(1000, ALTURA_SUELO, 50, 50, Auxiliar.cargar_sprite_sheets("Enemies", "AngryPig", 36, 30, True))]
 )
 
 nivel_2 = Stage(
@@ -39,14 +38,14 @@ nivel_2 = Stage(
     lista_frutas=stage_2_configs["lista_bananas"],
     lista_frutas_dos=stage_2_configs["lista_cherries"],
     lista_enemigos=stage_2_configs["lista_enemigos"]
-    # lista_enemigos=[Enemigo(1000, ALTURA_SUELO, 50, 50, Auxiliar.cargar_sprite_sheets("Enemies", "Chicken", 32, 34, True))]
 )
 
 
 #CONTROL DE NIVELES
 niveles = [nivel_1,nivel_2]
-nivel_actual = 1
-condicion_cambio_nivel = False
+nivel_actual = 0
+condicion_lvl_1 = False
+condicion_lvl_2 = False
 
 juego_ejecutandose = True
 
@@ -70,10 +69,11 @@ while juego_ejecutandose:
     for evento in lista_eventos:
         if evento.type == pygame.QUIT:
             juego_ejecutandose = False 
-
         if evento.type == pygame.KEYDOWN:
                 if evento.key == pygame.K_SPACE and rana.contador_salto < 2:
                     rana.saltar()
+
+
 
     #VARIABLES DE TIEMPO
     tiempo_nivel = 120
@@ -90,15 +90,31 @@ while juego_ejecutandose:
 
 
     #CAMBIO DE NIVEL SI SE CUMPLE CIERTA CONDICION
-    if condicion_cambio_nivel:
-        nivel_actual += 1
-        if nivel_actual >= len(niveles):
-            juego_ejecutandose = False
+    # if condicion_cambio_nivel:
+    #     nivel_actual += 1
+    #     if nivel_actual >= len(niveles):
+    #         juego_ejecutandose = False
 
-    if len(niveles[nivel_actual].lista_enemigos) > 0:
-        if niveles[nivel_actual].lista_enemigos[0].vidas == 0:
-            niveles[nivel_actual].lista_enemigos.pop(0)
-            print("MATASTE A TODOS LOS ENEMIGOS. FELICITACIONES!!!")
+    if not condicion_lvl_1:
+        if rana.puntos == 1000:
+            condicion_lvl_1 = True
+            nivel_actual += 1
+            # if nivel_actual >= len(niveles):
+            #     juego_ejecutandose = False
+    elif condicion_lvl_1 and not condicion_lvl_2:
+        if rana.puntos == 2000:
+            condicion_lvl_2 = True
+            # nivel_actual += 1
+    
+
+    # if len(niveles[nivel_actual].lista_enemigos) > 0:
+    #     if niveles[nivel_actual].lista_enemigos[0].vidas == 0:
+    #         niveles[nivel_actual].lista_enemigos.pop(0)
+    #     else:
+    #         print("Aún hay enemigos con vidas.")
+    # else:
+    #     print("MATASTE A TODOS LOS ENEMIGOS. ¡FELICITACIONES!")
+    #     condicion_cambio_nivel = True
 
     niveles[nivel_actual].dibujar(pantalla)
     niveles[nivel_actual].actualizar(pantalla, rana)
@@ -107,8 +123,6 @@ while juego_ejecutandose:
     pantalla.blit(vidas_restantes,(520,20)) 
     pantalla.blit(puntaje,(770,20))
 
-    # pantalla.blit(vidas_enemigas,(520,50)) 
-
     rana.actualizar(FPS,pantalla,rana,niveles[nivel_actual].lista_piso,niveles[nivel_actual].lista_plataformas,
                     niveles[nivel_actual].lista_frutas,niveles[nivel_actual].lista_plataformas_dos,niveles[nivel_actual].lista_plataformas_tres,
                     niveles[nivel_actual].lista_frutas_dos)
@@ -116,6 +130,17 @@ while juego_ejecutandose:
     if tiempo_nivel == 0:
         juego_ejecutandose = False
         pygame.quit()
+
+    if rana.vidas > 0:
+        if condicion_lvl_1:
+            pantalla.blit(mensaje_victoria,(200,210))
+            pantalla.blit(puntuacion_final,(310,300))
+        elif condicion_lvl_2:
+            pantalla.blit(mensaje_victoria,(200,210))
+            pantalla.blit(puntuacion_final,(310,300))
+    else:
+        pantalla.blit(mensaje_derrota,(380,210))
+        pantalla.blit(puntuacion_final,(310,300))
 
     pygame.display.flip()
 

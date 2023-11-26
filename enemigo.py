@@ -57,19 +57,19 @@ class Enemigo(pygame.sprite.Sprite):
                     self.rect.x = self.pos_inicial_enemiga[0]
                     self.rect.y = self.pos_inicial_enemiga[1]
                     self.vidas -= 1
-                    player.puntos += 1000                    
+                    player.puntos += 10                    
                     # print("Estoy pisando al sprite")
             elif self.rect.left < player.rect.right and self.rect.right > player.rect.right:
                 if player.vidas > 0:
                     player.rect.x = player.pos_inicial[0]
                     player.rect.y = player.pos_inicial[1]
-                    player.puntos = 0
+                    player.vidas -= 1
                     # print("Estoy chocando a la izquierda del sprite")
             elif self.rect.right > player.rect.left and self.rect.left < player.rect.left:
                 if player.vidas > 0:
-                    # player.rect.x = player.pos_inicial[0]
-                    # player.rect.y = player.pos_inicial[1]
-                    player.puntos = 0
+                    player.rect.x = player.pos_inicial[0]
+                    player.rect.y = player.pos_inicial[1]
+                    player.vidas -= 1
                     # print("Estoy chocando a la derecha del sprite")
             elif self.rect.bottom > player.rect.top and self.rect.top < player.rect.top:
                 if player.vidas > 0:
