@@ -2,7 +2,6 @@ import pygame
 from constantes import *
 from auxiliar import *
 from plataforma import *
-from auxiliar import *
 from player import *
 from enemigo import *
 from config import *
@@ -17,6 +16,7 @@ pygame.display.set_caption("FROG GAIDEN III")
 #LEO EL ARCHIVO DE CONFIGURACION DE NIVEL(PISO,PLATAFORMAS,FRUTAS)
 stage_1_configs = configurar_nivel_uno(ANCHO_VENTANA, ALTO_VENTANA, TAMAÑO_BLOQUE)
 stage_2_configs = configurar_nivel_dos(ANCHO_VENTANA, ALTO_VENTANA, TAMAÑO_BLOQUE)
+stage_3_configs = configurar_nivel_tres(ANCHO_VENTANA, ALTO_VENTANA, TAMAÑO_BLOQUE)
 
 #INSTANCIA Y CREACION DE NIVELES
 nivel_1 = Stage(
@@ -43,12 +43,21 @@ nivel_2 = Stage(
     cordenadas_trampas=stage_1_configs["coordenadas_sierras"]
 )
 
+nivel_3 = Stage(
+    fondo=stage_3_configs["fondo"],
+    lista_piso=stage_3_configs["lista_piso"],
+    lista_plataformas=stage_3_configs["lista_plataformas"],
+    lista_plataformas_dos=stage_3_configs["lista_plataformas_dos"],
+    lista_plataformas_tres=stage_3_configs["lista_plataformas_tres"],
+    lista_frutas=stage_3_configs["lista_bananas"],
+    lista_frutas_dos=stage_3_configs["lista_cherries"],
+    lista_enemigos=stage_3_configs["lista_enemigos"],
+    cordenadas_trampas=stage_1_configs["coordenadas_sierras"]
+)
 
 #CONTROL DE NIVELES
-niveles = [nivel_1,nivel_2]
-nivel_actual = 0
-condicion_lvl_1 = False
-condicion_lvl_2 = False
+niveles = [nivel_1,nivel_2,nivel_3]
+nivel_actual = 1
 
 juego_ejecutandose = True
 
@@ -56,8 +65,8 @@ juego_ejecutandose = True
 clock = pygame.time.Clock()
 
 #FUENTES Y MENSAJES
-fuente = pygame.font.SysFont("consolas",35)
-fuente_nivel = pygame.font.SysFont("consolas",90)
+# fuente = pygame.font.SysFont("consolas",35)
+# fuente_nivel = pygame.font.SysFont("consolas",90)
 mensaje = input("Ingrese su nombre: ")
 
 #CREO LA HOJA DE SPRITES DE MI PJ E INSTANCIO A MI PERSONAJE
@@ -84,12 +93,12 @@ while juego_ejecutandose:
     tiempo_nivel -= tiempo_transcurrido
 
     #VARIABLES DE SUPERFICIE EN PANTALLA
-    tiempo_en_pantalla = pygame.font.Font.render(fuente,"Tiempo: {}".format(tiempo_nivel),True,(0,0,0))
-    vidas_restantes = pygame.font.Font.render(fuente,"Vidas: {}".format(rana.vidas),True,(0,0,0))
-    puntaje = pygame.font.Font.render(fuente,"Puntos: {}".format(rana.puntos),True,(0,0,0))
-    mensaje_derrota = pygame.font.Font.render(fuente_nivel,"GAME OVER",True,(0,0,0))
-    mensaje_victoria = pygame.font.Font.render(fuente_nivel,"NIVEL COMPLETADO!",True,(0,0,0))
-    puntuacion_final = pygame.font.Font.render(fuente,"Nombre: {0} | Puntuacion: {1}".format(mensaje,rana.puntos),True,(0,0,0))
+    # tiempo_en_pantalla = pygame.font.Font.render(fuente,"Tiempo: {}".format(tiempo_nivel),True,(0,0,0))
+    # vidas_restantes = pygame.font.Font.render(fuente,"Vidas: {}".format(rana.vidas),True,(0,0,0))
+    # puntaje = pygame.font.Font.render(fuente,"Puntos: {}".format(rana.puntos),True,(0,0,0))
+    # mensaje_derrota = pygame.font.Font.render(fuente_nivel,"GAME OVER",True,(0,0,0))
+    # mensaje_victoria = pygame.font.Font.render(fuente_nivel,"NIVEL COMPLETADO!",True,(0,0,0))
+    # puntuacion_final = pygame.font.Font.render(fuente,"Nombre: {0} | Puntuacion: {1}".format(mensaje,rana.puntos),True,(0,0,0))
 
 
     #CAMBIO DE NIVEL SI SE CUMPLE CIERTA CONDICION
@@ -98,33 +107,23 @@ while juego_ejecutandose:
     #     if nivel_actual >= len(niveles):
     #         juego_ejecutandose = False
 
-    if not condicion_lvl_1:
-        if rana.puntos == 1000:
-            condicion_lvl_1 = True
-            nivel_actual += 1
-            # if nivel_actual >= len(niveles):
-            #     juego_ejecutandose = False
-    elif condicion_lvl_1 and not condicion_lvl_2:
-        if rana.puntos == 2000:
-            condicion_lvl_2 = True
-            # nivel_actual += 1
-    
 
-    # if len(niveles[nivel_actual].lista_enemigos) > 0:
-    #     if niveles[nivel_actual].lista_enemigos[0].vidas == 0:
-    #         niveles[nivel_actual].lista_enemigos.pop(0)
+    # for i in range(len(niveles[nivel_actual].lista_enemigos)):
+    #     if len(niveles[nivel_actual].lista_enemigos) > 0:
+    #         if niveles[nivel_actual].lista_enemigos[i].vidas == 0:
+    #             niveles[nivel_actual].lista_enemigos.pop(i)
+    #         else:
+    #             print("Aún hay enemigos con vidas.")
     #     else:
-    #         print("Aún hay enemigos con vidas.")
-    # else:
-    #     print("MATASTE A TODOS LOS ENEMIGOS. ¡FELICITACIONES!")
-    #     condicion_cambio_nivel = True
+    #         print("MATASTE A TODOS LOS ENEMIGOS. ¡FELICITACIONES!")
+    #         condicion_cambio_nivel = True
 
-    niveles[nivel_actual].dibujar(pantalla)
+    niveles[nivel_actual].dibujar(pantalla,tiempo_nivel,rana.vidas,rana.puntos,mensaje)
     niveles[nivel_actual].actualizar(pantalla, rana)
 
-    pantalla.blit(tiempo_en_pantalla,(200,20))
-    pantalla.blit(vidas_restantes,(520,20)) 
-    pantalla.blit(puntaje,(770,20))
+    # pantalla.blit(tiempo_en_pantalla,(200,20))
+    # pantalla.blit(vidas_restantes,(520,20)) 
+    # pantalla.blit(puntaje,(770,20))
 
     rana.actualizar(FPS,pantalla,rana,niveles[nivel_actual].lista_piso,niveles[nivel_actual].lista_plataformas,
                     niveles[nivel_actual].lista_frutas,niveles[nivel_actual].lista_plataformas_dos,niveles[nivel_actual].lista_plataformas_tres,
@@ -136,17 +135,6 @@ while juego_ejecutandose:
     if tiempo_nivel == 0:
         juego_ejecutandose = False
         pygame.quit()
-
-    if rana.vidas > 0:
-        if condicion_lvl_1:
-            pantalla.blit(mensaje_victoria,(200,210))
-            pantalla.blit(puntuacion_final,(310,300))
-        elif condicion_lvl_2:
-            pantalla.blit(mensaje_victoria,(200,210))
-            pantalla.blit(puntuacion_final,(310,300))
-    else:
-        pantalla.blit(mensaje_derrota,(380,210))
-        pantalla.blit(puntuacion_final,(310,300))
 
     pygame.display.flip()
 

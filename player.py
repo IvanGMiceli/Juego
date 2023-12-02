@@ -72,29 +72,25 @@ class Jugador(pygame.sprite.Sprite):
 
         for obj in objetos_colision:
             if pygame.sprite.collide_rect(jugador, obj):
-                # Colisión desde abajo
                 if jugador.rect.bottom > obj.rect.top and jugador.rect.top < obj.rect.top:
                     jugador.rect.bottom = obj.rect.top
                     jugador.vel_y = 0
                     self.contador_salto = 0
-                    # print("Estoy en el if de colision_plataformas (colisión desde abajo)")
-                # Colisión desde arriba
+                    # print("colisión desde abajo")
                 elif jugador.rect.top < obj.rect.bottom and jugador.rect.bottom > obj.rect.bottom:
                     jugador.rect.top = obj.rect.bottom
                     jugador.vel_y = 0
-                    # print("Estoy en el if de colision_plataformas (colisión desde arriba)")
-                # Colisión desde la derecha
+                    # print("colisión desde arriba")
                 elif jugador.rect.right > obj.rect.left and jugador.rect.left < obj.rect.left:
                     jugador.rect.right = obj.rect.left
                     jugador.vel_x = 0
                     jugador.vel_y = 0
-                    # print("Estoy en el if de colision_plataformas (colisión desde la derecha)")
-                # Colisión desde la izquierda
+                    # print("colisión desde la derecha")
                 elif jugador.rect.left < obj.rect.right and jugador.rect.right > obj.rect.right:
                     jugador.rect.left = obj.rect.right
                     jugador.vel_x = 0
                     jugador.vel_y = 0
-                    # print("Estoy en el if de colision_plataformas (colisión desde la izquierda)")
+                    # print("colisión desde la izquierda")
 
             objetos_colisionados.append(obj)
 

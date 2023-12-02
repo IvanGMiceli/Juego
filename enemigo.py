@@ -1,21 +1,55 @@
 import pygame
+import random as random
+import time
 from constantes import *
 from player import *
+from bullet import *
 
 class Enemigo(pygame.sprite.Sprite):      
-    def __init__(self,x,y,ancho,alto,sprites:dict):
+    def __init__(self,x,y,ancho,alto,sprites:dict,direccion:str):
         super().__init__()
         self.rect = pygame.Rect(x,y,ancho,alto)
-        self.vel_x = 2
+        self.vel_x = 0
         self.vel_y = 0
         self.mask = None
-        self.direccion = "derecha"
+        self.direccion = direccion
         self.cont_animacion = 0
         self.contador_caida = 0
         self.contador = 0
         self.sprites = sprites
         self.vidas = 3
         self.pos_inicial_enemiga = (1000,ALTURA_SUELO)
+        self.grupo_balas = pygame.sprite.Group()
+
+    def crear_bala(self):
+        if self.direccion == "derecha":
+            return Bullet(self.rect.centerx, self.rect.centery, "derecha",True)
+        else:
+            return Bullet(self.rect.centerx, self.rect.centery, "izquierda",True)
+        
+    def disparar_bala(self):
+        self.grupo_balas.add(self.crear_bala())
+
+    def can_shoot(self) -> bool:
+        self.porcentaje_disparo = 0.1  # Ajusta según tu necesidad
+        self.shots_count = 0
+        self.max_shots = 1  # Número máximo de disparos permitidos
+        self.shoot_interval = 10
+
+        if self.shots_count < self.max_shots:
+            if random.random() <= self.porcentaje_disparo:
+                # return rd.random() * 500 <= 10
+                self.shots_count += 1
+                return True
+        else:
+            # Si ya alcanzamos el máximo de disparos permitidos, espera antes de permitir otro disparo
+            time.sleep(self.shoot_interval)
+            self.shots_count = 0  # Reinicia el contador de disparos
+        return False
+    
+    def is_shooting(self) -> bool:
+        return self.can_shoot()
+        
 
     def definir_limite_pantalla(self):
         
@@ -83,6 +117,10 @@ class Enemigo(pygame.sprite.Sprite):
         self.colision_piso(enemigo,obj)
         self.colision_player(enemigo,player)
         self.dibujar(pantalla)
+        if self.is_shooting():
+            self.disparar_bala()
+        self.grupo_balas.draw(pantalla)
+        self.grupo_balas.update()
     
     def actualizar_animacion(self):
         anim_actual = "idle"
