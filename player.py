@@ -1,6 +1,8 @@
-from auxiliar import *
 import pygame
+import random as random
+from auxiliar import *
 from constantes import *
+from bullet import *
 
 
 class Jugador(pygame.sprite.Sprite):      
@@ -19,6 +21,8 @@ class Jugador(pygame.sprite.Sprite):
         self.vidas = 3
         self.max_vidas = 3
         self.pos_inicial = (100,ALTURA_SUELO)
+        self.grupo_balas = pygame.sprite.Group()
+    
 
     def moverse(self, delta_x, delta_y):
         self.rect.x += delta_x
@@ -51,6 +55,23 @@ class Jugador(pygame.sprite.Sprite):
         elif self.vel_y < 0 and self.rect.top <= 0:
             self.vel_y = 0
             self.rect.top = 0
+
+    def crear_bala(self):
+        if self.direccion == "izquierda":
+            return Bullet(self.rect.centerx, self.rect.centery, "derecha",True)
+        else:
+            return Bullet(self.rect.centerx, self.rect.centery, "izquierda",True)
+        
+    def disparar_bala(self):
+        bala = self.crear_bala()
+        self.grupo_balas.add(bala)
+
+    def colision_balas(self,lista_enemigos):
+
+        for enemigo in lista_enemigos:
+            if pygame.sprite.spritecollide(enemigo, self.grupo_balas, True):
+                enemigo.vidas -= 1
+                print(enemigo.vidas)
 
     def colision_piso(self,jugador,objetos_colision:list):
 
@@ -137,22 +158,26 @@ class Jugador(pygame.sprite.Sprite):
             self.aterrizar()
 
 
-    def actualizar(self,fps,pantalla:pygame.surface.Surface,player,obj:list,obj_2:list,frutas:list,obj_3:list,obj_4:list,obj_5):
+    def actualizar(self,fps,pantalla:pygame.surface.Surface,player,obj:list,obj_2:list,frutas:list,obj_3:list,obj_4:list,obj_5,lista_enemigos):
         self.mover_jugador()
         self.vel_y += min(1, (self.contador_caida / fps) * GRAVEDAD)
         self.moverse(self.vel_x, self.vel_y)  
-
         self.contador_caida += 1
         self.actualizar_animacion()
         self.actualizar_rect()
+        self.grupo_balas.draw(pantalla)
+        self.grupo_balas.update()
         self.definir_limite_pantalla()
         self.colision_piso(player,obj)
         self.colision_plataformas(player,obj_2)
         self.colision_plataformas(player,obj_3)
         self.colision_plataformas(player,obj_4)
+        self.colision_balas(lista_enemigos)
         self.colision_fruta(player,frutas)
         self.colision_fruta(player,obj_5)
         self.dibujar(pantalla)
+
+        
 
     def actualizar_animacion(self):
         anim_actual = "idle"

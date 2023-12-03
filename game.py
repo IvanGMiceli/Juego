@@ -86,6 +86,8 @@ while juego_ejecutandose:
         if evento.type == pygame.KEYDOWN:
                 if evento.key == pygame.K_SPACE and rana.contador_salto < 2:
                     rana.saltar()
+                if evento.key == pygame.K_f:
+                    rana.disparar_bala()
 
     #VARIABLES DE TIEMPO
     tiempo_nivel = 120
@@ -127,7 +129,7 @@ while juego_ejecutandose:
 
     rana.actualizar(FPS,pantalla,rana,niveles[nivel_actual].lista_piso,niveles[nivel_actual].lista_plataformas,
                     niveles[nivel_actual].lista_frutas,niveles[nivel_actual].lista_plataformas_dos,niveles[nivel_actual].lista_plataformas_tres,
-                    niveles[nivel_actual].lista_frutas_dos)
+                    niveles[nivel_actual].lista_frutas_dos,niveles[nivel_actual].lista_enemigos)
     
     for sierra in sierras:
         sierra.actualizar(pantalla,sierra,rana)

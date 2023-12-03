@@ -106,7 +106,9 @@ class Enemigo(pygame.sprite.Sprite):
                 if player.vidas > 0:
                     player.puntos = 0
                     # print("Estoy pegando de abajo al sprite")
-        elif pygame.sprite.spritecollide(player, self.grupo_balas, True):
+    
+    def colision_balas(self,player):
+        if pygame.sprite.spritecollide(player, self.grupo_balas, True):
             player.rect.x = 500
             player.rect.y = 600
             player.vidas -= 1
@@ -117,6 +119,7 @@ class Enemigo(pygame.sprite.Sprite):
         self.definir_limite_pantalla()
         self.colision_piso(enemigo,obj)
         self.colision_player(enemigo,player)
+        self.colision_balas(player)
         self.dibujar(pantalla)
         if self.is_shooting():
             self.disparar_bala()
