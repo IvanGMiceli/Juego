@@ -11,20 +11,21 @@ class Stage:
         self.lista_frutas_dos = lista_frutas_dos
         self.lista_enemigos = lista_enemigos
         self.cordenadas_trampas = cordenadas_trampas
+        self.puntaje_final = 0
 
     def dibujar(self, pantalla,tiempo_nivel,vidas,puntos,nombre):
         
         pantalla.blit(self.fondo, self.fondo.get_rect())
         
         fuente = pygame.font.SysFont("consolas",35)
-        fuente_nivel = pygame.font.SysFont("consolas",90)        
+        fuente_nivel = pygame.font.SysFont("consolas",90)       
 
         tiempo_en_pantalla = pygame.font.Font.render(fuente,"Tiempo: {}".format(tiempo_nivel),True,(0,0,0))
         vidas_restantes = pygame.font.Font.render(fuente,"Vidas: {}".format(vidas),True,(0,0,0))
-        puntaje = pygame.font.Font.render(fuente,"Puntos: {}".format(puntos),True,(0,0,0))
+        puntaje = pygame.font.Font.render(fuente,"Puntos: {}".format(self.puntaje_final),True,(0,0,0))
         mensaje_derrota = pygame.font.Font.render(fuente_nivel,"GAME OVER",True,(0,0,0))
         mensaje_victoria = pygame.font.Font.render(fuente_nivel,"NIVEL COMPLETADO!",True,(0,0,0))
-        puntuacion_final = pygame.font.Font.render(fuente,"Nombre: {0} | Puntuacion: {1}".format(nombre,puntos),True,(0,0,0))
+        puntuacion_final = pygame.font.Font.render(fuente,"Nombre: {0} | Puntuacion: {1}".format(nombre,self.puntaje_final),True,(0,0,0))
 
         pantalla.blit(tiempo_en_pantalla,(200,20))
         pantalla.blit(vidas_restantes,(520,20)) 
@@ -45,6 +46,7 @@ class Stage:
             fruit.dibujar(pantalla)
 
         if vidas > 0:
+            self.puntaje_final = puntos 
             if puntos == 1000:
                 pantalla.blit(mensaje_victoria,(200,210))
                 pantalla.blit(puntuacion_final,(310,300))
@@ -58,4 +60,4 @@ class Stage:
             enemigo.actualizar(pantalla, enemigo, self.lista_piso, jugador)
             if enemigo.vidas <= 0:
                 self.lista_enemigos.remove(enemigo)
-                enemigo.actualizar(pantalla, enemigo, self.lista_piso, jugador)
+                # enemigo.actualizar(pantalla, enemigo, self.lista_piso, jugador)

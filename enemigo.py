@@ -17,7 +17,7 @@ class Enemigo(pygame.sprite.Sprite):
         self.contador_caida = 0
         self.contador = 0
         self.sprites = sprites
-        self.vidas = 3
+        self.vidas = 1
         self.pos_inicial_enemiga = (1000,ALTURA_SUELO)
         self.grupo_balas = pygame.sprite.Group()
 
