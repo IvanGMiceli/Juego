@@ -31,26 +31,23 @@ class Enemigo(pygame.sprite.Sprite):
         self.grupo_balas.add(self.crear_bala())
 
     def can_shoot(self) -> bool:
-        self.porcentaje_disparo = 0.4  # Ajusta según tu necesidad
-        self.shots_count = 0
-        self.max_shots = 1  # Número máximo de disparos permitidos
-        self.shoot_interval = 10
+        self.porcentaje_disparo = 0.4
+        self.contador_disparos = 0
+        self.max_disparos = 1
+        self.intervalo_disparo = 10
 
-        if self.shots_count < self.max_shots:
+        if self.contador_disparos < self.max_disparos:
             if random.random() * 100 <= self.porcentaje_disparo:
-                # return rd.random() * 500 <= 10
-                self.shots_count += 1
+                self.contador_disparos += 1
                 return True
         else:
-            # Si ya alcanzamos el máximo de disparos permitidos, espera antes de permitir otro disparo
-            time.sleep(self.shoot_interval)
-            self.shots_count = 0  # Reinicia el contador de disparos
+            time.sleep(self.intervalo_disparo)
+            self.contador_disparos = 0  # Reinicia el contador de disparos
         return False
     
     def is_shooting(self) -> bool:
         return self.can_shoot()
-        
-
+    
     def definir_limite_pantalla(self):
         
         if self.direccion == "izquierda":
@@ -109,6 +106,10 @@ class Enemigo(pygame.sprite.Sprite):
                 if player.vidas > 0:
                     player.puntos = 0
                     # print("Estoy pegando de abajo al sprite")
+        elif pygame.sprite.spritecollide(player, self.grupo_balas, True):
+            player.rect.x = 500
+            player.rect.y = 600
+            player.vidas -= 1
 
     def actualizar(self,pantalla:pygame.surface.Surface,enemigo,obj:list,player:Jugador):
         self.actualizar_animacion()
