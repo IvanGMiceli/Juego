@@ -44,16 +44,18 @@ class Stage:
         for fruit in self.lista_frutas_dos:
             fruit.dibujar(pantalla)
 
-        # if vidas > 0:
-        #     if puntos == 1000:
-        #         pantalla.blit(mensaje_victoria,(200,210))
-        #         pantalla.blit(puntuacion_final,(310,300))
-        # else:
-        #     pantalla.blit(mensaje_derrota,(380,210))
-        #     pantalla.blit(puntuacion_final,(310,300))
-
+        if vidas > 0:
+            if puntos == 1000:
+                pantalla.blit(mensaje_victoria,(200,210))
+                pantalla.blit(puntuacion_final,(310,300))
+        else:
+            pantalla.blit(mensaje_derrota,(380,210))
+            pantalla.blit(puntuacion_final,(310,300))
 
     def actualizar(self, pantalla, jugador):
         # self.dibujar(pantalla)
         for enemigo in self.lista_enemigos:
             enemigo.actualizar(pantalla, enemigo, self.lista_piso, jugador)
+            if enemigo.vidas <= 0:
+                self.lista_enemigos.remove(enemigo)
+                enemigo.actualizar(pantalla, enemigo, self.lista_piso, jugador)

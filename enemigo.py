@@ -121,10 +121,10 @@ class Enemigo(pygame.sprite.Sprite):
         self.colision_player(enemigo,player)
         self.colision_balas(player)
         self.dibujar(pantalla)
-        if self.is_shooting():
-            self.disparar_bala()
         self.grupo_balas.draw(pantalla)
         self.grupo_balas.update()
+        if self.is_shooting():
+            self.disparar_bala()
     
     def actualizar_animacion(self):
         anim_actual = "idle"

@@ -65,8 +65,6 @@ juego_ejecutandose = True
 clock = pygame.time.Clock()
 
 #FUENTES Y MENSAJES
-# fuente = pygame.font.SysFont("consolas",35)
-# fuente_nivel = pygame.font.SysFont("consolas",90)
 mensaje = input("Ingrese su nombre: ")
 
 #CREO LA HOJA DE SPRITES DE MI PJ E INSTANCIO A MI PERSONAJE
@@ -94,15 +92,6 @@ while juego_ejecutandose:
     tiempo_transcurrido = pygame.time.get_ticks() // 1000  
     tiempo_nivel -= tiempo_transcurrido
 
-    #VARIABLES DE SUPERFICIE EN PANTALLA
-    # tiempo_en_pantalla = pygame.font.Font.render(fuente,"Tiempo: {}".format(tiempo_nivel),True,(0,0,0))
-    # vidas_restantes = pygame.font.Font.render(fuente,"Vidas: {}".format(rana.vidas),True,(0,0,0))
-    # puntaje = pygame.font.Font.render(fuente,"Puntos: {}".format(rana.puntos),True,(0,0,0))
-    # mensaje_derrota = pygame.font.Font.render(fuente_nivel,"GAME OVER",True,(0,0,0))
-    # mensaje_victoria = pygame.font.Font.render(fuente_nivel,"NIVEL COMPLETADO!",True,(0,0,0))
-    # puntuacion_final = pygame.font.Font.render(fuente,"Nombre: {0} | Puntuacion: {1}".format(mensaje,rana.puntos),True,(0,0,0))
-
-
     #CAMBIO DE NIVEL SI SE CUMPLE CIERTA CONDICION
     # if condicion_cambio_nivel:
     #     nivel_actual += 1
@@ -122,10 +111,6 @@ while juego_ejecutandose:
 
     niveles[nivel_actual].dibujar(pantalla,tiempo_nivel,rana.vidas,rana.puntos,mensaje)
     niveles[nivel_actual].actualizar(pantalla, rana)
-
-    # pantalla.blit(tiempo_en_pantalla,(200,20))
-    # pantalla.blit(vidas_restantes,(520,20)) 
-    # pantalla.blit(puntaje,(770,20))
 
     rana.actualizar(FPS,pantalla,rana,niveles[nivel_actual].lista_piso,niveles[nivel_actual].lista_plataformas,
                     niveles[nivel_actual].lista_frutas,niveles[nivel_actual].lista_plataformas_dos,niveles[nivel_actual].lista_plataformas_tres,
