@@ -31,13 +31,13 @@ class Enemigo(pygame.sprite.Sprite):
         self.grupo_balas.add(self.crear_bala())
 
     def can_shoot(self) -> bool:
-        self.porcentaje_disparo = 0.1  # Ajusta según tu necesidad
+        self.porcentaje_disparo = 0.4  # Ajusta según tu necesidad
         self.shots_count = 0
         self.max_shots = 1  # Número máximo de disparos permitidos
         self.shoot_interval = 10
 
         if self.shots_count < self.max_shots:
-            if random.random() <= self.porcentaje_disparo:
+            if random.random() * 100 <= self.porcentaje_disparo:
                 # return rd.random() * 500 <= 10
                 self.shots_count += 1
                 return True
