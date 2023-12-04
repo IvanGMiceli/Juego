@@ -34,10 +34,9 @@ class Sierra(Objeto):
 
         if pygame.sprite.collide_mask(trampa, player):
             if player.vidas > 0:
+                player.rect.x = 500
+                player.rect.y = 600
                 player.vidas -= 1
-                print(player.vidas)
-            elif player.vidas == 0:
-                print("MORISTE")
 
     def actualizar(self,pantalla,trampa,player):
         self.dibujar(pantalla)

@@ -47,7 +47,7 @@ class Stage:
 
         if vidas > 0:
             self.puntaje_final = puntos 
-            if puntos == 1000:
+            if puntos >= 1000:
                 pantalla.blit(mensaje_victoria,(200,210))
                 pantalla.blit(puntuacion_final,(310,300))
         else:

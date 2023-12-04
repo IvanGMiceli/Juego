@@ -49,14 +49,7 @@ def configurar_nivel_uno(ancho_ventana, alto_ventana, tamaño_bloque):
         stage_1_configs["lista_kiwis"].append(fruta)
 
     for i in range(3):
-        enemigo_uno = Enemigo(0, 158, 50, 50, Auxiliar.cargar_sprite_sheets("Enemies", "Chicken", 32, 34, True),"derecha")
-        enemigo_dos = Enemigo(1100, 348, 50, 50, Auxiliar.cargar_sprite_sheets("Enemies", "Chicken", 32, 34, True),"derecha")
-        enemigo_tres = Enemigo(0, 750, 50, 50, Auxiliar.cargar_sprite_sheets("Enemies", "Chicken", 32, 34, True),"derecha")
-        stage_1_configs["lista_enemigos"].append(enemigo_uno)
-        stage_1_configs["lista_enemigos"].append(enemigo_dos)
-        stage_1_configs["lista_enemigos"].append(enemigo_tres)
-        
-        # stage_1_configs["lista_enemigos"].append(Enemigo((i * 2) + i * 100, ALTURA_SUELO, 50, 50, Auxiliar.cargar_sprite_sheets("Enemies", "Chicken", 32, 34, True),"derecha",1))
+        stage_1_configs["lista_enemigos"].append(Enemigo((i * 2) + i * 100, ALTURA_SUELO, 50, 50, Auxiliar.cargar_sprite_sheets("Enemies", "Chicken", 32, 34, True),"derecha",1))
 
     coordenadas_sierras = [
         (672, ALTO_VENTANA - TAMAÑO_BLOQUE - 40, 38, 38),
@@ -118,6 +111,14 @@ def configurar_nivel_dos(ancho_ventana, alto_ventana, tamaño_bloque):
         stage_2_configs["lista_enemigos"].append(enemigo_uno)
         stage_2_configs["lista_enemigos"].append(enemigo_dos)
         stage_2_configs["lista_enemigos"].append(enemigo_tres)
+
+    coordenadas_sierras = [
+        (830, 380, 38, 38),
+        (180, 480, 38, 38),
+        (830, 670, 38, 38),
+    ]
+
+    stage_2_configs["coordenadas_sierras"] = coordenadas_sierras
         
     return stage_2_configs
 

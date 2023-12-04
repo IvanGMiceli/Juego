@@ -40,7 +40,7 @@ nivel_2 = Stage(
     lista_frutas=stage_2_configs["lista_bananas"],
     lista_frutas_dos=stage_2_configs["lista_cherries"],
     lista_enemigos=stage_2_configs["lista_enemigos"],
-    cordenadas_trampas=stage_1_configs["coordenadas_sierras"]
+    cordenadas_trampas=stage_2_configs["coordenadas_sierras"]
 )
 
 nivel_3 = Stage(
