@@ -49,7 +49,7 @@ def configurar_nivel_uno(ancho_ventana, alto_ventana, tamaño_bloque):
         stage_1_configs["lista_kiwis"].append(fruta)
 
     for i in range(3):
-        stage_1_configs["lista_enemigos"].append(Enemigo((i * 2) + i * 100, ALTURA_SUELO, 50, 50, Auxiliar.cargar_sprite_sheets("Enemies", "Chicken", 32, 34, True),"derecha"))
+        stage_1_configs["lista_enemigos"].append(Enemigo((i * 2) + i * 100, ALTURA_SUELO, 50, 50, Auxiliar.cargar_sprite_sheets("Enemies", "Chicken", 32, 34, True),"derecha",1))
 
     coordenadas_sierras = [
         (672, ALTO_VENTANA - TAMAÑO_BLOQUE - 40, 38, 38),
@@ -146,19 +146,18 @@ def configurar_nivel_tres(ancho_ventana, alto_ventana, tamaño_bloque):
         bloque.cargar_imagen_bloque(tamaño_bloque,"Terrain","Terrain.png",96,64)
         stage_3_configs["lista_plataformas_tres"].append(bloque)
 
-
     for i in range(5):
         fruta = Objeto((i * tamaño_bloque) + 1, alto_ventana - tamaño_bloque * 4, 450 , 70)
-        fruta.cargar_imagen_fruta(35,"Items/Fruits", "Bananas.png")
+        fruta.cargar_imagen_fruta(35,"Items/Fruits", "Orange.png")
         stage_3_configs["lista_bananas"].append(fruta)
 
     for i in range(6):
         fruta = Objeto(ancho_ventana - (tamaño_bloque * i), alto_ventana - tamaño_bloque * 5, 450 , 70)
-        fruta.cargar_imagen_fruta(35,"Items/Fruits", "Cherries.png")
+        fruta.cargar_imagen_fruta(35,"Items/Fruits", "Pineapple.png")
         stage_3_configs["lista_cherries"].append(fruta)
 
     for i in range(3):
-        stage_3_configs["lista_enemigos"].append(Enemigo((i * 2) + i * 100, ALTURA_SUELO, 50, 50, Auxiliar.cargar_sprite_sheets("Enemies", "AngryPig", 36, 30, True),"derecha"))
+        stage_3_configs["lista_enemigos"].append(Enemigo((i * 2) + i * 100, ALTURA_SUELO, 50, 50, Auxiliar.cargar_sprite_sheets("Enemies", "AngryPig", 36, 30, True),"derecha",2))
         
     return stage_3_configs
 

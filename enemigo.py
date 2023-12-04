@@ -6,10 +6,10 @@ from player import *
 from bullet import *
 
 class Enemigo(pygame.sprite.Sprite):      
-    def __init__(self,x,y,ancho,alto,sprites:dict,direccion:str):
+    def __init__(self,x,y,ancho,alto,sprites:dict,direccion:str,vel_x = 0):
         super().__init__()
         self.rect = pygame.Rect(x,y,ancho,alto)
-        self.vel_x = 0
+        self.vel_x = vel_x
         self.vel_y = 0
         self.mask = None
         self.direccion = direccion

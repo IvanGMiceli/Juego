@@ -57,7 +57,7 @@ nivel_3 = Stage(
 
 #CONTROL DE NIVELES
 niveles = [nivel_1,nivel_2,nivel_3]
-nivel_actual = 1
+nivel_actual = 2
 
 juego_ejecutandose = True
 
