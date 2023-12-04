@@ -109,9 +109,10 @@ class Enemigo(pygame.sprite.Sprite):
     
     def colision_balas(self,player):
         if pygame.sprite.spritecollide(player, self.grupo_balas, True):
-            player.rect.x = 500
-            player.rect.y = 600
-            player.vidas -= 1
+            if player.vidas > 0:
+                player.rect.x = 500
+                player.rect.y = 600
+                player.vidas -= 1
 
     def actualizar(self,pantalla:pygame.surface.Surface,enemigo,obj:list,player:Jugador):
         self.actualizar_animacion()
