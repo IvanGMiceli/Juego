@@ -72,7 +72,6 @@ class Jugador(pygame.sprite.Sprite):
             if pygame.sprite.spritecollide(enemigo, self.grupo_balas, True):
                 enemigo.vidas -= 1
                 self.puntos += 100
-                print(enemigo.vidas)
 
     def colision_piso(self,jugador,objetos_colision:list):
 

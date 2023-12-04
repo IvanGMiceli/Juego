@@ -55,9 +55,8 @@ class Stage:
             pantalla.blit(puntuacion_final,(310,300))
 
     def actualizar(self, pantalla, jugador):
-        # self.dibujar(pantalla)
+
         for enemigo in self.lista_enemigos:
             enemigo.actualizar(pantalla, enemigo, self.lista_piso, jugador)
             if enemigo.vidas <= 0:
                 self.lista_enemigos.remove(enemigo)
-                # enemigo.actualizar(pantalla, enemigo, self.lista_piso, jugador)

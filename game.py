@@ -57,7 +57,7 @@ nivel_3 = Stage(
 
 #CONTROL DE NIVELES
 niveles = [nivel_1,nivel_2,nivel_3]
-nivel_actual = 2
+nivel_actual = 0
 
 juego_ejecutandose = True
 
@@ -71,6 +71,7 @@ mensaje = input("Ingrese su nombre: ")
 hoja_sprites = Auxiliar.cargar_sprite_sheets("MainCharacters", "NinjaFrog", 32, 32, True)
 rana = Jugador(600,ALTURA_SUELO,50,50,hoja_sprites)
 
+#TRAMPAS
 sierras = crear_sierras(niveles[nivel_actual].cordenadas_trampas)
 
 while juego_ejecutandose:

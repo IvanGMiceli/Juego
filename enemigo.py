@@ -14,7 +14,6 @@ class Enemigo(pygame.sprite.Sprite):
         self.mask = None
         self.direccion = direccion
         self.cont_animacion = 0
-        self.contador_caida = 0
         self.contador = 0
         self.sprites = sprites
         self.vidas = 1
@@ -42,7 +41,7 @@ class Enemigo(pygame.sprite.Sprite):
                 return True
         else:
             time.sleep(self.intervalo_disparo)
-            self.contador_disparos = 0  # Reinicia el contador de disparos
+            self.contador_disparos = 0
         return False
     
     def is_shooting(self) -> bool:
