@@ -12,20 +12,18 @@ class Stage:
         self.lista_enemigos = lista_enemigos
         self.cordenadas_trampas = cordenadas_trampas
         self.puntaje_final = 0
+        self.sonido_victoria = pygame.mixer.Sound(r"Juego\assets\Sounds\sonido_victoria.wav")
+        self.sonido_victoria_reproducido = False
+        self.win = (True,False)
 
-    def dibujar(self, pantalla,tiempo_nivel,vidas,puntos,nombre):
-        
+    def dibujar(self, pantalla,tiempo_nivel,vidas):
+
         pantalla.blit(self.fondo, self.fondo.get_rect())
         
         fuente = pygame.font.SysFont("consolas",35)
-        fuente_nivel = pygame.font.SysFont("consolas",90)       
-
         tiempo_en_pantalla = pygame.font.Font.render(fuente,"Tiempo: {}".format(tiempo_nivel),True,(0,0,0))
         vidas_restantes = pygame.font.Font.render(fuente,"Vidas: {}".format(vidas),True,(0,0,0))
         puntaje = pygame.font.Font.render(fuente,"Puntos: {}".format(self.puntaje_final),True,(0,0,0))
-        mensaje_derrota = pygame.font.Font.render(fuente_nivel,"GAME OVER",True,(0,0,0))
-        mensaje_victoria = pygame.font.Font.render(fuente_nivel,"NIVEL COMPLETADO!",True,(0,0,0))
-        puntuacion_final = pygame.font.Font.render(fuente,"Nombre: {0} | Puntuacion: {1}".format(nombre,self.puntaje_final),True,(0,0,0))
 
         pantalla.blit(tiempo_en_pantalla,(200,20))
         pantalla.blit(vidas_restantes,(520,20)) 
@@ -45,18 +43,41 @@ class Stage:
         for fruit in self.lista_frutas_dos:
             fruit.dibujar(pantalla)
 
-        if vidas > 0:
-            self.puntaje_final = puntos 
-            if puntos >= 1000:
-                pantalla.blit(mensaje_victoria,(200,210))
-                pantalla.blit(puntuacion_final,(310,300))
-        else:
-            pantalla.blit(mensaje_derrota,(380,210))
-            pantalla.blit(puntuacion_final,(310,300))
 
-    def actualizar(self, pantalla, jugador):
+    def actualizar(self, pantalla, jugador,nombre):
 
         for enemigo in self.lista_enemigos:
             enemigo.actualizar(pantalla, enemigo, self.lista_piso, jugador)
             if enemigo.vidas <= 0:
                 self.lista_enemigos.remove(enemigo)
+
+        if jugador.vidas > 0:
+            self.puntaje_final = jugador.puntos
+            if jugador.puntos >= 1000 and self.win:
+                self.mostrar_mensaje(pantalla,nombre,"victoria")
+        else:
+            self.mostrar_mensaje(pantalla,nombre,"derrota")
+
+
+    def reproducir_victoria(self, loops=0):
+
+        if not self.sonido_victoria_reproducido:
+            self.sonido_victoria.play(loops=loops)
+            self.sonido_victoria_reproducido = True
+            
+
+    def mostrar_mensaje(self,pantalla,nombre,estado):
+
+        fuente = pygame.font.SysFont("consolas",35)
+        fuente_nivel = pygame.font.SysFont("consolas",90) 
+        mensaje_derrota = pygame.font.Font.render(fuente_nivel,"GAME OVER",True,(0,0,0))
+        mensaje_victoria = pygame.font.Font.render(fuente_nivel,"NIVEL COMPLETADO!",True,(0,0,0))
+        puntuacion_final = pygame.font.Font.render(fuente,"Nombre: {0} | Puntuacion: {1}".format(nombre,self.puntaje_final),True,(0,0,0))
+
+        if estado == "victoria":
+                pantalla.blit(mensaje_victoria,(200,210))
+                pantalla.blit(puntuacion_final,(310,300))
+                self.reproducir_victoria()
+        elif estado == "derrota":
+            pantalla.blit(mensaje_derrota,(380,210))
+            pantalla.blit(puntuacion_final,(310,300))

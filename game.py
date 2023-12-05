@@ -58,7 +58,7 @@ nivel_3 = Stage(
 #CARGAR Y REPRODUCIR MUSICA Y EFECTOS
 pygame.mixer.music.load(r"Juego\assets\Sounds\Overworld_Day.mp3")
 
-volumen_inicial = 0.2
+volumen_inicial = 0.3
 pygame.mixer.music.set_volume(volumen_inicial)
 
 pygame.mixer.music.play(-1)
@@ -113,8 +113,8 @@ while juego_ejecutandose:
     tiempo_transcurrido = pygame.time.get_ticks() // 1000  
     tiempo_nivel -= tiempo_transcurrido
 
-    niveles[nivel_actual].dibujar(pantalla,tiempo_nivel,rana.vidas,rana.puntos,mensaje)
-    niveles[nivel_actual].actualizar(pantalla, rana)
+    niveles[nivel_actual].dibujar(pantalla,tiempo_nivel,rana.vidas)
+    niveles[nivel_actual].actualizar(pantalla, rana,mensaje)
 
     rana.actualizar(FPS,pantalla,rana,niveles[nivel_actual].lista_piso,niveles[nivel_actual].lista_plataformas,
                     niveles[nivel_actual].lista_frutas,niveles[nivel_actual].lista_plataformas_dos,niveles[nivel_actual].lista_plataformas_tres,
