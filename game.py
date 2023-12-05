@@ -55,9 +55,17 @@ nivel_3 = Stage(
     cordenadas_trampas=stage_1_configs["coordenadas_sierras"]
 )
 
+#CARGAR Y REPRODUCIR MUSICA
+pygame.mixer.music.load(r"Juego\assets\Sounds\Overworld_Day.mp3")
+
+volumen_inicial = 0.5
+pygame.mixer.music.set_volume(volumen_inicial)
+
+pygame.mixer.music.play(-1)
+
 #CONTROL DE NIVELES
 niveles = [nivel_1,nivel_2,nivel_3]
-nivel_actual = 0
+nivel_actual = 1
 
 juego_ejecutandose = True
 
@@ -87,28 +95,17 @@ while juego_ejecutandose:
                     rana.saltar()
                 if evento.key == pygame.K_f:
                     rana.disparar_bala()
+                if evento.key == pygame.K_q:
+                    volumen_actual = min(1.0, pygame.mixer.music.get_volume() + 0.1)
+                    pygame.mixer.music.set_volume(volumen_actual)
+                elif evento.key == pygame.K_e:
+                    volumen_actual = max(0.0, pygame.mixer.music.get_volume() - 0.1)
+                    pygame.mixer.music.set_volume(volumen_actual)
 
     #VARIABLES DE TIEMPO
     tiempo_nivel = 120
     tiempo_transcurrido = pygame.time.get_ticks() // 1000  
     tiempo_nivel -= tiempo_transcurrido
-
-    #CAMBIO DE NIVEL SI SE CUMPLE CIERTA CONDICION
-    # if condicion_cambio_nivel:
-    #     nivel_actual += 1
-    #     if nivel_actual >= len(niveles):
-    #         juego_ejecutandose = False
-
-
-    # for i in range(len(niveles[nivel_actual].lista_enemigos)):
-    #     if len(niveles[nivel_actual].lista_enemigos) > 0:
-    #         if niveles[nivel_actual].lista_enemigos[i].vidas == 0:
-    #             niveles[nivel_actual].lista_enemigos.pop(i)
-    #         else:
-    #             print("Aún hay enemigos con vidas.")
-    #     else:
-    #         print("MATASTE A TODOS LOS ENEMIGOS. ¡FELICITACIONES!")
-    #         condicion_cambio_nivel = True
 
     niveles[nivel_actual].dibujar(pantalla,tiempo_nivel,rana.vidas,rana.puntos,mensaje)
     niveles[nivel_actual].actualizar(pantalla, rana)
@@ -127,3 +124,22 @@ while juego_ejecutandose:
     pygame.display.flip()
 
 pygame.quit()
+
+
+
+    #CAMBIO DE NIVEL SI SE CUMPLE CIERTA CONDICION
+    # if condicion_cambio_nivel:
+    #     nivel_actual += 1
+    #     if nivel_actual >= len(niveles):
+    #         juego_ejecutandose = False
+
+
+    # for i in range(len(niveles[nivel_actual].lista_enemigos)):
+    #     if len(niveles[nivel_actual].lista_enemigos) > 0:
+    #         if niveles[nivel_actual].lista_enemigos[i].vidas == 0:
+    #             niveles[nivel_actual].lista_enemigos.pop(i)
+    #         else:
+    #             print("Aún hay enemigos con vidas.")
+    #     else:
+    #         print("MATASTE A TODOS LOS ENEMIGOS. ¡FELICITACIONES!")
+    #         condicion_cambio_nivel = True
