@@ -55,13 +55,17 @@ nivel_3 = Stage(
     cordenadas_trampas=stage_1_configs["coordenadas_sierras"]
 )
 
-#CARGAR Y REPRODUCIR MUSICA
+#CARGAR Y REPRODUCIR MUSICA Y EFECTOS
 pygame.mixer.music.load(r"Juego\assets\Sounds\Overworld_Day.mp3")
 
-volumen_inicial = 0.5
+volumen_inicial = 0.2
 pygame.mixer.music.set_volume(volumen_inicial)
 
 pygame.mixer.music.play(-1)
+
+sonido_disparo = pygame.mixer.Sound(r"Juego\assets\Sounds\player_fire.wav")
+sonido_salto = pygame.mixer.Sound(r"Juego\assets\Sounds\player jump.wav")
+
 
 #CONTROL DE NIVELES
 niveles = [nivel_1,nivel_2,nivel_3]
@@ -93,8 +97,10 @@ while juego_ejecutandose:
         if evento.type == pygame.KEYDOWN:
                 if evento.key == pygame.K_SPACE and rana.contador_salto < 2:
                     rana.saltar()
+                    sonido_salto.play()
                 if evento.key == pygame.K_f:
                     rana.disparar_bala()
+                    sonido_disparo.play()
                 if evento.key == pygame.K_q:
                     volumen_actual = min(1.0, pygame.mixer.music.get_volume() + 0.1)
                     pygame.mixer.music.set_volume(volumen_actual)
