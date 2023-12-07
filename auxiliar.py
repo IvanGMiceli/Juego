@@ -1,8 +1,9 @@
 import pygame
-import os
+# import os
 from os import listdir
 from os.path import isfile, join
 import json
+import sqlite3
 
 json_de_config = "./configs/config.json"
 
@@ -63,3 +64,29 @@ def open_configs() -> dict:
     """
     with open(json_de_config, 'r', encoding='utf-8') as config:
         return json.load(config)
+    
+def crear_tabla_posiciones(nombre,jugador):
+    """
+    Esta función crea una tabla llamada "posiciones" en una base de datos SQLite e inserta nombre y puntaje del player
+    """
+
+    nombre = nombre
+    puntaje = jugador.puntos
+
+    with sqlite3.connect("Juego\posiciones.db") as conexion:
+        try:
+            sentencia = '''CREATE TABLE IF NOT EXISTS posiciones
+                        (
+                            nombre TEXT,
+                            puntaje INTEGER
+                        )
+                        '''
+            conexion.execute(sentencia)
+
+            conexion.execute("INSERT INTO posiciones(nombre, puntaje) VALUES (?, ?)", (nombre, puntaje))
+
+            conexion.commit()           
+            print("Se creó o actualizó la tabla de posiciones")
+
+        except sqlite3.OperationalError as e:
+            print(f"Error al crear o actualizar la tabla de posiciones: {e}")

@@ -10,31 +10,6 @@ from stage import *
 from trampas import *
 from menus import *
 
-def inicializar_base_datos():
-    conexion = sqlite3.connect("Juego/puntuaciones.db")
-    cursor = conexion.cursor()
-    cursor.execute('''CREATE TABLE IF NOT EXISTS puntuaciones
-                    (nombre TEXT,
-                    puntaje INTEGER)''')
-    conexion.commit()
-    conexion.close()
-
-def insertar_puntuacion(nombre, puntaje):
-    conexion = sqlite3.connect("Juego/puntuaciones.db")
-    cursor = conexion.cursor()
-    cursor.execute("INSERT INTO puntuaciones VALUES (?, ?)", (nombre, puntaje))
-    conexion.commit()
-    conexion.close()
-
-def obtener_puntuaciones():
-    conexion = sqlite3.connect("Juego/puntuaciones.db")
-    cursor = conexion.cursor()
-    cursor.execute("SELECT * FROM puntuaciones ORDER BY puntaje DESC")
-    puntuaciones = cursor.fetchall()
-    conexion.close()
-    return puntuaciones
-
-
 #INICIALIZAR PANTALLA Y TITULO
 pygame.init()
 pantalla = pygame.display.set_mode((ANCHO_VENTANA,ALTO_VENTANA))
@@ -199,9 +174,7 @@ while juego_ejecutandose:
                                 seleccion_menu_settings = True
                                 selec_menu_principal = False
                             elif resultado_menu_principal == 2:
-                                insertar_puntuacion(mensaje,rana.puntos)
-                                pygame.display.flip()
-                                # selec_menu_principal = False
+                                crear_tabla_posiciones(mensaje,rana)
                             elif resultado_menu_principal == 3:
                                 juego_ejecutandose = False
 
