@@ -10,9 +10,7 @@ from trampas import *
 
 class MenuOpciones:
     def __init__(self,opciones:list[str]):
-        self.fondo = pygame.Surface((ANCHO_VENTANA, ALTO_VENTANA))
-        self.fondo.set_alpha(128)
-        self.fondo.fill((0, 0, 0))
+        self.fondo = pygame.transform.scale(pygame.image.load(r"Juego\assets\Menu\fondo_menu.jpg"), (ANCHO_VENTANA, ALTO_VENTANA))
         self.opciones = opciones
         self.opcion_seleccionada = 0
         self.font = pygame.font.Font(None, 50)
@@ -21,9 +19,9 @@ class MenuOpciones:
     def dibujar(self, pantalla):
         pantalla.blit(self.fondo, (0, 0))
         for i, opcion in enumerate(self.opciones):
-            texto = self.font.render(opcion, True, (255, 255, 255))
+            texto = self.font.render(opcion, True, (0, 0, 0))
             x = ANCHO_VENTANA // 2 - texto.get_width() // 2
-            y = ALTO_VENTANA // 2 - texto.get_height() // 2 + i * 70
+            y = ALTO_VENTANA // 3 - texto.get_height() + i * 70
 
             if i == self.opcion_seleccionada:
                 pygame.draw.rect(pantalla, (255, 0, 0), (x - self.contorno_ancho, y - self.contorno_ancho,
@@ -157,9 +155,7 @@ while juego_ejecutandose:
                                 pygame.mixer.music.pause()
                             else:
                                 pygame.mixer.music.unpause()
-                                
                     else:
-                        # Manejar eventos del menú de pausa
                         resultado_menu_pausa = menu_pausa.manejar_eventos(lista_eventos)
                         if resultado_menu_pausa is not None:
                             if resultado_menu_pausa == 0:
@@ -177,7 +173,7 @@ while juego_ejecutandose:
                         seleccion_nivel = False
 
     if not juego_pausado and not seleccion_nivel:
-        
+
         #VARIABLES DE TIEMPO
         tiempo_nivel = 120
         tiempo_transcurrido = pygame.time.get_ticks() // 1000  
