@@ -110,7 +110,7 @@ nivel_actual = 0
 
 #CONTROL JUEGO
 juego_ejecutandose = True
-menu_pausa = MenuOpciones(["Continuar", "Salir al Menú de Niveles", "Salir del Juego", "Ir al Menu Principal"])
+menu_pausa = MenuOpciones(["Continuar", "Elegir Nivel", "Salir del Juego", "Ir al Menu Principal"])
 menu_niveles = MenuOpciones(["Nivel 0", "Nivel 1", "Nivel 2"])
 menu_principal = MenuOpciones(["Jugar", "Opciones", "Rankings","Salir"])
 juego_pausado = False
@@ -188,17 +188,17 @@ while juego_ejecutandose:
                                 selec_menu_principal = False
                             elif resultado_menu_principal == 1:
                                 pass
-                                selec_menu_principal = False
+                                # selec_menu_principal = False
                             elif resultado_menu_principal == 2:
                                 pass
-                                selec_menu_principal = False
+                                # selec_menu_principal = False
                             elif resultado_menu_principal == 3:
                                 juego_ejecutandose = False
 
     if not juego_pausado and not seleccion_nivel and not selec_menu_principal:
 
         #VARIABLES DE TIEMPO
-        tiempo_nivel = 120
+        tiempo_nivel = 200
         tiempo_transcurrido = pygame.time.get_ticks() // 1000  
         tiempo_nivel -= tiempo_transcurrido
 
@@ -230,22 +230,3 @@ while juego_ejecutandose:
 
 
 pygame.quit()
-
-
-
-    #CAMBIO DE NIVEL SI SE CUMPLE CIERTA CONDICION
-    # if condicion_cambio_nivel:
-    #     nivel_actual += 1
-    #     if nivel_actual >= len(niveles):
-    #         juego_ejecutandose = False
-
-
-    # for i in range(len(niveles[nivel_actual].lista_enemigos)):
-    #     if len(niveles[nivel_actual].lista_enemigos) > 0:
-    #         if niveles[nivel_actual].lista_enemigos[i].vidas == 0:
-    #             niveles[nivel_actual].lista_enemigos.pop(i)
-    #         else:
-    #             print("Aún hay enemigos con vidas.")
-    #     else:
-    #         print("MATASTE A TODOS LOS ENEMIGOS. ¡FELICITACIONES!")
-    #         condicion_cambio_nivel = True
