@@ -11,10 +11,9 @@ from trampas import *
 class MenuOpciones:
     def __init__(self,opciones:list[str]):
         self.fondo = pygame.Surface((ANCHO_VENTANA, ALTO_VENTANA))
-        self.fondo.set_alpha(128)  # Ajusta la transparencia del fondo
-        self.fondo.fill((0, 0, 0))  # Rellena el fondo con negro
+        self.fondo.set_alpha(128)
+        self.fondo.fill((0, 0, 0))
         self.opciones = opciones
-        # self.opciones = ["Continuar", "Salir al Menú Principal", "Salir del Juego"]
         self.opcion_seleccionada = 0
         self.font = pygame.font.Font(None, 50)
         self.contorno_ancho = 2
@@ -163,24 +162,22 @@ while juego_ejecutandose:
                         # Manejar eventos del menú de pausa
                         resultado_menu_pausa = menu_pausa.manejar_eventos(lista_eventos)
                         if resultado_menu_pausa is not None:
-                            if resultado_menu_pausa == 0:  # Continuar
+                            if resultado_menu_pausa == 0:
                                 juego_pausado = False
                                 pygame.mixer.music.unpause()
-                            elif resultado_menu_pausa == 1:  # Salir al Menú Principal
+                            elif resultado_menu_pausa == 1:
                                 seleccion_nivel = True
-                            elif resultado_menu_pausa == 2:  # Salir del Juego
+                            elif resultado_menu_pausa == 2:
                                 juego_ejecutandose = False
                 else:
-                # Manejar eventos de la pantalla de selección de nivel
                     resultado_menu_nivel = menu_niveles.manejar_eventos(lista_eventos)
                     if resultado_menu_nivel is not None:
-                        # Implementa la lógica para cambiar al nivel seleccionado
-                        nivel_actual = resultado_menu_nivel  # +1 porque los niveles comienzan desde 1
+                        nivel_actual = resultado_menu_nivel
                         print(f"Has seleccionado el Nivel {nivel_actual}")
-                        # Agrega aquí la lógica para cargar el nivel seleccionado
                         seleccion_nivel = False
 
     if not juego_pausado and not seleccion_nivel:
+        
         #VARIABLES DE TIEMPO
         tiempo_nivel = 120
         tiempo_transcurrido = pygame.time.get_ticks() // 1000  
