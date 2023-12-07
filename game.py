@@ -8,6 +8,43 @@ from config import *
 from stage import *
 from trampas import *
 
+class MenuOpciones:
+    def __init__(self,opciones:list[str]):
+        self.fondo = pygame.Surface((ANCHO_VENTANA, ALTO_VENTANA))
+        self.fondo.set_alpha(128)  # Ajusta la transparencia del fondo
+        self.fondo.fill((0, 0, 0))  # Rellena el fondo con negro
+        self.opciones = opciones
+        # self.opciones = ["Continuar", "Salir al Menú Principal", "Salir del Juego"]
+        self.opcion_seleccionada = 0
+        self.font = pygame.font.Font(None, 50)
+        self.contorno_ancho = 2
+
+    def dibujar(self, pantalla):
+        pantalla.blit(self.fondo, (0, 0))
+        for i, opcion in enumerate(self.opciones):
+            texto = self.font.render(opcion, True, (255, 255, 255))
+            x = ANCHO_VENTANA // 2 - texto.get_width() // 2
+            y = ALTO_VENTANA // 2 - texto.get_height() // 2 + i * 70
+
+            if i == self.opcion_seleccionada:
+                pygame.draw.rect(pantalla, (255, 0, 0), (x - self.contorno_ancho, y - self.contorno_ancho,
+                                texto.get_width() + 2 * self.contorno_ancho,
+                                texto.get_height() + 2 * self.contorno_ancho),
+                                self.contorno_ancho * 2)
+
+            pantalla.blit(texto, (x, y))
+
+    def manejar_eventos(self, eventos):
+        for evento in eventos:
+            if evento.type == pygame.KEYDOWN:
+                if evento.key == pygame.K_UP:
+                    self.opcion_seleccionada = (self.opcion_seleccionada - 1) % len(self.opciones)
+                elif evento.key == pygame.K_DOWN:
+                    self.opcion_seleccionada = (self.opcion_seleccionada + 1) % len(self.opciones)
+                elif evento.key == pygame.K_RETURN:
+                    return self.opcion_seleccionada
+        return None
+
 #INICIALIZAR PANTALLA Y TITULO
 pygame.init()
 pantalla = pygame.display.set_mode((ANCHO_VENTANA,ALTO_VENTANA))
@@ -69,9 +106,15 @@ sonido_salto = pygame.mixer.Sound(r"Juego\assets\Sounds\player jump.wav")
 
 #CONTROL DE NIVELES
 niveles = [nivel_1,nivel_2,nivel_3]
-nivel_actual = 1
+nivel_actual = 0
 
+#CONTROL JUEGO
 juego_ejecutandose = True
+menu_pausa = MenuOpciones(["Continuar", "Salir al Menú de Niveles", "Salir del Juego"])
+menu_niveles = MenuOpciones(["Nivel 0", "Nivel 1", "Nivel 2"])
+juego_pausado = False
+seleccion_nivel = False
+
 
 #TIEMPO
 clock = pygame.time.Clock()
@@ -95,39 +138,77 @@ while juego_ejecutandose:
         if evento.type == pygame.QUIT:
             juego_ejecutandose = False 
         if evento.type == pygame.KEYDOWN:
-                if evento.key == pygame.K_SPACE and rana.contador_salto < 2:
-                    rana.saltar()
-                    sonido_salto.play()
-                if evento.key == pygame.K_f:
-                    rana.disparar_bala()
-                    sonido_disparo.play()
-                if evento.key == pygame.K_q:
-                    volumen_actual = min(1.0, pygame.mixer.music.get_volume() + 0.1)
-                    pygame.mixer.music.set_volume(volumen_actual)
-                elif evento.key == pygame.K_e:
-                    volumen_actual = max(0.0, pygame.mixer.music.get_volume() - 0.1)
-                    pygame.mixer.music.set_volume(volumen_actual)
+                if not seleccion_nivel:
+                    if not juego_pausado:
+                        if evento.key == pygame.K_SPACE and rana.contador_salto < 2:
+                            rana.saltar()
+                            sonido_salto.play()
+                        if evento.key == pygame.K_f:
+                            rana.disparar_bala()
+                            sonido_disparo.play()
+                        if evento.key == pygame.K_q:
+                            volumen_actual = min(1.0, pygame.mixer.music.get_volume() + 0.1)
+                            pygame.mixer.music.set_volume(volumen_actual)
+                        elif evento.key == pygame.K_e:
+                            volumen_actual = max(0.0, pygame.mixer.music.get_volume() - 0.1)
+                            pygame.mixer.music.set_volume(volumen_actual)
+                        if evento.key == pygame.K_p:
+                            juego_pausado = not juego_pausado
+                            if juego_pausado:
+                                pygame.mixer.music.pause()
+                            else:
+                                pygame.mixer.music.unpause()
+                                
+                    else:
+                        # Manejar eventos del menú de pausa
+                        resultado_menu_pausa = menu_pausa.manejar_eventos(lista_eventos)
+                        if resultado_menu_pausa is not None:
+                            if resultado_menu_pausa == 0:  # Continuar
+                                juego_pausado = False
+                                pygame.mixer.music.unpause()
+                            elif resultado_menu_pausa == 1:  # Salir al Menú Principal
+                                seleccion_nivel = True
+                            elif resultado_menu_pausa == 2:  # Salir del Juego
+                                juego_ejecutandose = False
+                else:
+                # Manejar eventos de la pantalla de selección de nivel
+                    resultado_menu_nivel = menu_niveles.manejar_eventos(lista_eventos)
+                    if resultado_menu_nivel is not None:
+                        # Implementa la lógica para cambiar al nivel seleccionado
+                        nivel_actual = resultado_menu_nivel  # +1 porque los niveles comienzan desde 1
+                        print(f"Has seleccionado el Nivel {nivel_actual}")
+                        # Agrega aquí la lógica para cargar el nivel seleccionado
+                        seleccion_nivel = False
 
-    #VARIABLES DE TIEMPO
-    tiempo_nivel = 120
-    tiempo_transcurrido = pygame.time.get_ticks() // 1000  
-    tiempo_nivel -= tiempo_transcurrido
+    if not juego_pausado and not seleccion_nivel:
+        #VARIABLES DE TIEMPO
+        tiempo_nivel = 120
+        tiempo_transcurrido = pygame.time.get_ticks() // 1000  
+        tiempo_nivel -= tiempo_transcurrido
 
-    niveles[nivel_actual].dibujar(pantalla,tiempo_nivel,rana.vidas)
-    niveles[nivel_actual].actualizar(pantalla, rana,mensaje)
+        niveles[nivel_actual].dibujar(pantalla,tiempo_nivel,rana.vidas)
+        niveles[nivel_actual].actualizar(pantalla, rana,mensaje,nivel_actual)
 
-    rana.actualizar(FPS,pantalla,rana,niveles[nivel_actual].lista_piso,niveles[nivel_actual].lista_plataformas,
-                    niveles[nivel_actual].lista_frutas,niveles[nivel_actual].lista_plataformas_dos,niveles[nivel_actual].lista_plataformas_tres,
-                    niveles[nivel_actual].lista_frutas_dos,niveles[nivel_actual].lista_enemigos)
-    
-    for sierra in sierras:
-        sierra.actualizar(pantalla,sierra,rana)
+        rana.actualizar(FPS,pantalla,rana,niveles[nivel_actual].lista_piso,niveles[nivel_actual].lista_plataformas,
+                        niveles[nivel_actual].lista_frutas,niveles[nivel_actual].lista_plataformas_dos,niveles[nivel_actual].lista_plataformas_tres,
+                        niveles[nivel_actual].lista_frutas_dos,niveles[nivel_actual].lista_enemigos)
+        
+        for sierra in sierras:
+            sierra.actualizar(pantalla,sierra,rana)
 
-    if tiempo_nivel == 0:
-        juego_ejecutandose = False
-        pygame.quit()
+        if tiempo_nivel == 0:
+            juego_ejecutandose = False
+            pygame.quit()
 
-    pygame.display.flip()
+        pygame.display.flip()
+
+    elif seleccion_nivel:
+        menu_niveles.dibujar(pantalla)
+        pygame.display.flip()
+    else:
+        menu_pausa.dibujar(pantalla)
+        pygame.display.flip()
+
 
 pygame.quit()
 

@@ -44,20 +44,35 @@ class Stage:
             fruit.dibujar(pantalla)
 
 
-    def actualizar(self, pantalla, jugador,nombre):
+    def actualizar(self, pantalla, jugador,nombre,nivel_actual):
 
         for enemigo in self.lista_enemigos:
             enemigo.actualizar(pantalla, enemigo, self.lista_piso, jugador)
             if enemigo.vidas <= 0:
                 self.lista_enemigos.remove(enemigo)
 
-        if jugador.vidas > 0:
-            self.puntaje_final = jugador.puntos
-            if jugador.puntos >= 1000 and self.win:
-                self.mostrar_mensaje(pantalla,nombre,"victoria")
-        else:
-            self.mostrar_mensaje(pantalla,nombre,"derrota")
-
+        match nivel_actual:
+            case 0:
+                if jugador.vidas > 0:
+                    self.puntaje_final = jugador.puntos
+                    if jugador.puntos >= 1000 and self.win:
+                        self.mostrar_mensaje(pantalla,nombre,"victoria")
+                else:
+                    self.mostrar_mensaje(pantalla,nombre,"derrota")
+            case 1:
+                if jugador.vidas > 0:
+                    self.puntaje_final = jugador.puntos
+                    if len(self.lista_enemigos) == 0 and self.win:
+                        self.mostrar_mensaje(pantalla,nombre,"victoria")
+                else:
+                    self.mostrar_mensaje(pantalla,nombre,"derrota")
+            case 2:
+                if jugador.vidas > 0:
+                    self.puntaje_final = jugador.puntos
+                    if jugador.puntos >= 2000 and (len(self.lista_frutas) == 0 or len(self.lista_frutas_dos) == 0) and len(self.lista_enemigos) == 0 and self.win:
+                        self.mostrar_mensaje(pantalla,nombre,"victoria")
+                else:
+                    self.mostrar_mensaje(pantalla,nombre,"derrota")
 
     def reproducir_victoria(self, loops=0):
 
