@@ -13,15 +13,17 @@ class MenuOpciones:
         self.fondo = pygame.transform.scale(pygame.image.load(r"Juego\assets\Menu\fondo_menu.jpg"), (ANCHO_VENTANA, ALTO_VENTANA))
         self.opciones = opciones
         self.opcion_seleccionada = 0
-        self.font = pygame.font.Font(None, 50)
+        self.fuente = pygame.font.Font(r'Archivos Juego\recursos\fonts\Halimount.otf', 60)
+        self.fuente_titulo = pygame.font.Font(r'Archivos Juego\recursos\fonts\Halimount.otf', 100)
         self.contorno_ancho = 2
 
     def dibujar(self, pantalla):
         pantalla.blit(self.fondo, (0, 0))
+        titulo = self.fuente_titulo.render("FROG GAIDEN III", True, (0, 0, 0))
         for i, opcion in enumerate(self.opciones):
-            texto = self.font.render(opcion, True, (0, 0, 0))
+            texto = self.fuente.render(opcion, True, (255, 255, 255))
             x = ANCHO_VENTANA // 2 - texto.get_width() // 2
-            y = ALTO_VENTANA // 3 - texto.get_height() + i * 70
+            y = ALTO_VENTANA // 2 - texto.get_height() + i * 70
 
             if i == self.opcion_seleccionada:
                 pygame.draw.rect(pantalla, (255, 0, 0), (x - self.contorno_ancho, y - self.contorno_ancho,
@@ -29,6 +31,7 @@ class MenuOpciones:
                                 texto.get_height() + 2 * self.contorno_ancho),
                                 self.contorno_ancho * 2)
 
+            pantalla.blit(titulo,(350,50))
             pantalla.blit(texto, (x, y))
 
     def manejar_eventos(self, eventos):
@@ -107,7 +110,7 @@ nivel_actual = 0
 
 #CONTROL JUEGO
 juego_ejecutandose = True
-menu_pausa = MenuOpciones(["Continuar", "Salir al Menú de Niveles", "Salir del Juego", "Salir al Menu Principal"])
+menu_pausa = MenuOpciones(["Continuar", "Salir al Menú de Niveles", "Salir del Juego", "Ir al Menu Principal"])
 menu_niveles = MenuOpciones(["Nivel 0", "Nivel 1", "Nivel 2"])
 menu_principal = MenuOpciones(["Jugar", "Opciones", "Rankings","Salir"])
 juego_pausado = False
