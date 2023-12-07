@@ -59,6 +59,7 @@ class Stage:
                         self.mostrar_mensaje(pantalla,nombre,"victoria")
                 else:
                     self.mostrar_mensaje(pantalla,nombre,"derrota")
+                    
             case 1:
                 if jugador.vidas > 0:
                     self.puntaje_final = jugador.puntos
@@ -66,6 +67,7 @@ class Stage:
                         self.mostrar_mensaje(pantalla,nombre,"victoria")
                 else:
                     self.mostrar_mensaje(pantalla,nombre,"derrota")
+
             case 2:
                 if jugador.vidas > 0:
                     self.puntaje_final = jugador.puntos
