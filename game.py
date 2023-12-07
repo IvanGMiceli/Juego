@@ -1,4 +1,5 @@
 import pygame
+import sqlite3
 from constantes import *
 from auxiliar import *
 from plataforma import *
@@ -8,6 +9,31 @@ from config import *
 from stage import *
 from trampas import *
 from menus import *
+
+def inicializar_base_datos():
+    conexion = sqlite3.connect("Juego/puntuaciones.db")
+    cursor = conexion.cursor()
+    cursor.execute('''CREATE TABLE IF NOT EXISTS puntuaciones
+                    (nombre TEXT,
+                    puntaje INTEGER)''')
+    conexion.commit()
+    conexion.close()
+
+def insertar_puntuacion(nombre, puntaje):
+    conexion = sqlite3.connect("Juego/puntuaciones.db")
+    cursor = conexion.cursor()
+    cursor.execute("INSERT INTO puntuaciones VALUES (?, ?)", (nombre, puntaje))
+    conexion.commit()
+    conexion.close()
+
+def obtener_puntuaciones():
+    conexion = sqlite3.connect("Juego/puntuaciones.db")
+    cursor = conexion.cursor()
+    cursor.execute("SELECT * FROM puntuaciones ORDER BY puntaje DESC")
+    puntuaciones = cursor.fetchall()
+    conexion.close()
+    return puntuaciones
+
 
 #INICIALIZAR PANTALLA Y TITULO
 pygame.init()
@@ -77,8 +103,11 @@ juego_ejecutandose = True
 menu_pausa = MenuOpciones(["Continuar", "Elegir Nivel", "Salir del Juego", "Ir al Menu Principal"])
 menu_niveles = MenuOpciones(["Nivel 0", "Nivel 1", "Nivel 2"])
 menu_principal = MenuOpciones(["Jugar", "Opciones", "Rankings","Salir"])
+menu_settings = MenuOpciones(["Activar Musica","Desactivar Musica","Subir Volumen","Bajar Volumen","Salir"])
+musica_activa = True
 juego_pausado = False
 seleccion_nivel = False
+seleccion_menu_settings = False
 selec_menu_principal = True
 
 
@@ -105,61 +134,78 @@ while juego_ejecutandose:
             juego_ejecutandose = False 
         if evento.type == pygame.KEYDOWN:
                 if not selec_menu_principal:
-                    if not seleccion_nivel:
-                        if not juego_pausado:
-                            if evento.key == pygame.K_SPACE and rana.contador_salto < 2:
-                                rana.saltar()
-                                sonido_salto.play()
-                            if evento.key == pygame.K_f:
-                                rana.disparar_bala()
-                                sonido_disparo.play()
-                            if evento.key == pygame.K_q:
+                    if not seleccion_menu_settings:
+                        if not seleccion_nivel:
+                            if not juego_pausado:
+                                if evento.key == pygame.K_SPACE and rana.contador_salto < 2:
+                                    rana.saltar()
+                                    sonido_salto.play()
+                                if evento.key == pygame.K_f:
+                                    rana.disparar_bala()
+                                    sonido_disparo.play()
+                                if evento.key == pygame.K_p:
+                                    juego_pausado = not juego_pausado
+                                    if juego_pausado:
+                                        pygame.mixer.music.pause()
+                                    else:
+                                        pygame.mixer.music.unpause()
+                            else:
+                                resultado_menu_pausa = menu_pausa.manejar_eventos(lista_eventos)
+                                if resultado_menu_pausa is not None:
+                                    if resultado_menu_pausa == 0:
+                                        juego_pausado = False
+                                        pygame.mixer.music.unpause()
+                                    elif resultado_menu_pausa == 1:
+                                        seleccion_nivel = True
+                                    elif resultado_menu_pausa == 2:
+                                        juego_ejecutandose = False
+                                    elif resultado_menu_pausa == 3:
+                                        juego_pausado = False
+                                        selec_menu_principal = True
+                        else:
+                            resultado_menu_nivel = menu_niveles.manejar_eventos(lista_eventos)
+                            if resultado_menu_nivel is not None:
+                                nivel_actual = resultado_menu_nivel
+                                seleccion_nivel = False
+                    else:
+                        resultado_menu_settings = menu_settings.manejar_eventos(lista_eventos)
+                        if resultado_menu_settings is not None:
+                            if resultado_menu_settings == 0:
+                                musica_activa = True
+                                pygame.mixer.music.unpause()
+                            elif resultado_menu_settings == 1:
+                                musica_activa = False
+                                pygame.mixer.music.pause()
+                            elif resultado_menu_settings == 2:
                                 volumen_actual = min(1.0, pygame.mixer.music.get_volume() + 0.1)
                                 pygame.mixer.music.set_volume(volumen_actual)
-                            elif evento.key == pygame.K_e:
+                            elif resultado_menu_settings == 3:
                                 volumen_actual = max(0.0, pygame.mixer.music.get_volume() - 0.1)
                                 pygame.mixer.music.set_volume(volumen_actual)
-                            if evento.key == pygame.K_p:
-                                juego_pausado = not juego_pausado
-                                if juego_pausado:
-                                    pygame.mixer.music.pause()
-                                else:
-                                    pygame.mixer.music.unpause()
-                        else:
-                            resultado_menu_pausa = menu_pausa.manejar_eventos(lista_eventos)
-                            if resultado_menu_pausa is not None:
-                                if resultado_menu_pausa == 0:
-                                    juego_pausado = False
-                                    pygame.mixer.music.unpause()
-                                elif resultado_menu_pausa == 1:
-                                    seleccion_nivel = True
-                                elif resultado_menu_pausa == 2:
-                                    juego_ejecutandose = False
-                                elif resultado_menu_pausa == 3:
-                                    juego_pausado = False
-                                    selec_menu_principal = True
-                    else:
-                        resultado_menu_nivel = menu_niveles.manejar_eventos(lista_eventos)
-                        if resultado_menu_nivel is not None:
-                            nivel_actual = resultado_menu_nivel
-                            seleccion_nivel = False
+                            elif resultado_menu_settings == 4:
+                                seleccion_menu_settings = False
+                                selec_menu_principal = True
                 else:   
-                        pygame.mixer.music.unpause()
+                        if musica_activa:
+                            pygame.mixer.music.unpause()
+                        else:
+                            pygame.mixer.music.pause()
                         resultado_menu_principal = menu_principal.manejar_eventos(lista_eventos)
                         if resultado_menu_principal is not None:
                             if resultado_menu_principal == 0:
                                 seleccion_nivel = True
                                 selec_menu_principal = False
                             elif resultado_menu_principal == 1:
-                                pass
-                                # selec_menu_principal = False
+                                seleccion_menu_settings = True
+                                selec_menu_principal = False
                             elif resultado_menu_principal == 2:
-                                pass
+                                insertar_puntuacion(mensaje,rana.puntos)
+                                pygame.display.flip()
                                 # selec_menu_principal = False
                             elif resultado_menu_principal == 3:
                                 juego_ejecutandose = False
 
-    if not juego_pausado and not seleccion_nivel and not selec_menu_principal:
+    if not juego_pausado and not seleccion_nivel and not selec_menu_principal and not seleccion_menu_settings:
 
         #VARIABLES DE TIEMPO
         tiempo_nivel = 200
@@ -187,6 +233,9 @@ while juego_ejecutandose:
         pygame.display.flip()
     elif juego_pausado:
         menu_pausa.dibujar(pantalla)
+        pygame.display.flip()
+    elif seleccion_menu_settings:
+        menu_settings.dibujar(pantalla)
         pygame.display.flip()
     else:
         menu_principal.dibujar(pantalla)
